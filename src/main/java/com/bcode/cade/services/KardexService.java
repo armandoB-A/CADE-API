@@ -44,17 +44,18 @@ public class KardexService {
         List<Calif> listaCalif = new ArrayList<>();
         for (CargaAcademicaBcode c : cargaAcademicaBcodes) {
             listaCalif.add(new Calif(
+                    c.getIdHorarioFk().getClaveMateriaFk().getId(),
                     c.getIdHorarioFk().getClaveMateriaFk().getNombreMateria(),
                     c.getIdHorarioFk().getClaveMateriaFk().getTotalCreditos(),
-                    c.getIdHorarioFk().getIdAdministrativoFk().getNombreAdministrativo(),
+                    c.getCalificacion(),
                     c.getIdHorarioFk().getPeriodoSemestre(),
                     c.getIdOpcionFk().getDescripcionOpcion(),
-                    c.getIdOpcionFk().getOportunidadOpcion()));
+                    c.getIdOpcionFk().getOportunidadOpcion()
+                    ));
         }
         listaCargaDef.add(new CargaAcademicaBcodeDto(
                 cargaAcademicaBcodes.get(0).getNumeroControlFk().getId(), cargaAcademicaBcodes.get(0).getNumeroControlFk().getNombreAlumno(),
-                listaCalif,
-                cargaAcademicaBcodes.get(0).getSemestreActual()
+                cargaAcademicaBcodes.get(0).getSemestreActual(), listaCalif
         ));
         return listaCargaDef;
     }
