@@ -9,11 +9,11 @@ public class ReticulaCarreraMateriaBcode {
     @Column(name = "id_reticula_carrera_materia", nullable = false)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "clave_carrera_fk", nullable = false)
     private CarreraBcode claveCarreraFk;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "clave_materia_fk", nullable = false)
     private MateriaBcode claveMateriaFk;
 

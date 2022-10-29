@@ -9,7 +9,7 @@ public class ReticulaBcode {
     @Column(name = "clave_reticula", nullable = false, length = 25)
     private String id;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_especialidad_fk", nullable = false)
     private EspecialidadBcode idEspecialidadFk;
 
