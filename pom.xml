@@ -11,7 +11,7 @@
     <groupId>com.bcode</groupId>
     <artifactId>CADE</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <name>CADE</name>
     <description>CADE</description>
     <properties>
@@ -58,6 +58,13 @@
             <artifactId>modelmapper</artifactId>
             <version>3.1.0</version>
         </dependency>
+
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-boot-starter</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>

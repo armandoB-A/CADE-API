@@ -37,9 +37,16 @@ public class AlumnoBcode {
     @Column(name = "contrasenia_alumno", nullable = false, length = 150)
     private String contraseniaAlumno;
 
+    @Column(name = "genero_alumno", nullable = false)
+    private Character generoAlumno;
+
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "id_rol_fk", nullable = false)
     private RolBcode idRolFk;
+
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "clave_carrera_fk", nullable = false)
+    private CarreraBcode claveCarreraFk;
 
     public String getId() {
         return id;
@@ -121,12 +128,28 @@ public class AlumnoBcode {
         this.contraseniaAlumno = contraseniaAlumno;
     }
 
+    public Character getGeneroAlumno() {
+        return generoAlumno;
+    }
+
+    public void setGeneroAlumno(Character generoAlumno) {
+        this.generoAlumno = generoAlumno;
+    }
+
     public RolBcode getIdRolFk() {
         return idRolFk;
     }
 
     public void setIdRolFk(RolBcode idRolFk) {
         this.idRolFk = idRolFk;
+    }
+
+    public CarreraBcode getClaveCarreraFk() {
+        return claveCarreraFk;
+    }
+
+    public void setClaveCarreraFk(CarreraBcode claveCarreraFk) {
+        this.claveCarreraFk = claveCarreraFk;
     }
 
 }

@@ -1,7 +1,6 @@
 package com.bcode.cade.entities;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 
 @Entity
 @Table(name = "CARGA_ACADEMICA_BCODE")
@@ -22,17 +21,11 @@ public class CargaAcademicaBcode {
     @JoinColumn(name = "id_opcion_fk", nullable = false)
     private OpcionBcode idOpcionFk;
 
-    @Column(name = "calificacion", nullable = false, precision = 10)
-    private BigDecimal calificacion;
-
     @Column(name = "status_carga_academica", nullable = false)
     private Character statusCargaAcademica;
 
-    @Column(name = "semestre_actual", nullable = false, length = 2)
-    private String semestreActual;
-
-    @Column(name = "nivel_desempenio", nullable = false, length = 15)
-    private String nivelDesempenio;
+    @Column(name = "semestre_llevado", nullable = false, length = 2)
+    private String semestreLlevado;
 
     public Long getId() {
         return id;
@@ -66,14 +59,6 @@ public class CargaAcademicaBcode {
         this.idOpcionFk = idOpcionFk;
     }
 
-    public BigDecimal getCalificacion() {
-        return calificacion;
-    }
-
-    public void setCalificacion(BigDecimal calificacion) {
-        this.calificacion = calificacion;
-    }
-
     public Character getStatusCargaAcademica() {
         return statusCargaAcademica;
     }
@@ -82,20 +67,12 @@ public class CargaAcademicaBcode {
         this.statusCargaAcademica = statusCargaAcademica;
     }
 
-    public String getSemestreActual() {
-        return semestreActual;
+    public String getSemestreLlevado() {
+        return semestreLlevado;
     }
 
-    public void setSemestreActual(String semestreActual) {
-        this.semestreActual = semestreActual;
-    }
-
-    public String getNivelDesempenio() {
-        return nivelDesempenio;
-    }
-
-    public void setNivelDesempenio(String nivelDesempenio) {
-        this.nivelDesempenio = nivelDesempenio;
+    public void setSemestreLlevado(String semestreLlevado) {
+        this.semestreLlevado = semestreLlevado;
     }
 
 }
