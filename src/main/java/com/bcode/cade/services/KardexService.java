@@ -3,8 +3,10 @@ package com.bcode.cade.services;
 import com.bcode.cade.dto.AlumnoBcodeDto;
 import com.bcode.cade.dto.CalificacionBcodeDto;
 import com.bcode.cade.entities.AlumnoBcode;
+import com.bcode.cade.entities.CargaAcademicaBcode;
 import com.bcode.cade.repository.AlumnoBcodeRepository;
 import com.bcode.cade.repository.CalificacionBcodeRepository;
+import com.bcode.cade.repository.CargaAcademicaBcodeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -19,25 +21,24 @@ import java.util.List;
 public class KardexService {
     @Autowired
     private AlumnoBcodeRepository alumnoBcodeRepository;
-
+    @Autowired
+    private CargaAcademicaBcodeRepository cargaAcademicaBcodeRepository;
     @Autowired
     private CalificacionBcodeRepository calificacionBcodeRepository;
 
-    /*
-        public AlumnoBcode getKardex(String numeroControl) {
-            try {
-                entityToDto(alumnoBcodeRepository.findById(numeroControl).get());
-                return alumnoBcodeRepository.findById(numeroControl).get();
-            } catch (Exception ex) {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "El numero de control : " + numeroControl + " no se encuentra registrado", ex);
-            }
-        }
-    */
-    public AlumnoBcodeDto getK(String numeroControl) {
+    public AlumnoBcodeDto getKardex(String numeroControl) {
         try {
             return entityToDto(calificacionBcodeRepository.buscarCargaByNumC(numeroControl), numeroControl, alumnoBcodeRepository.findById(numeroControl).get());
         } catch (Exception ex) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "El numero de control : " + numeroControl + " no se encuentra registrado", ex);
+        }
+    }
+    public AlumnoBcodeDto getK(String numeroControl, String semestre) {
+        try {
+            return entityToDto(calificacionBcodeRepository.buscarCargaByNumCAndSemestre(numeroControl, semestre), numeroControl, alumnoBcodeRepository.findById(numeroControl).get());
+        } catch (Exception ex) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "El numero de control : " + numeroControl +
+                    " no se encuentra registrado", ex);
         }
     }
 
@@ -63,12 +64,6 @@ public class KardexService {
         );
 
     }
-/*
-    public List<CargaAcademicaBcodeDto> getKs(String numeroc, String carrera) {
-        try {
-            return entityToDto(cargaAcademicaBcodeRepository.buscarCargaByNumC(numeroc), numeroc);
-        } catch (Exception ex) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "El numero de control : " + numeroc + " no se encuentra registrado", ex);
-        }
-    }*/
+
+
 }

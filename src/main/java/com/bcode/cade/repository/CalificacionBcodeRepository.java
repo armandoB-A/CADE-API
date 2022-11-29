@@ -22,4 +22,19 @@ public interface CalificacionBcodeRepository extends JpaRepository<CalificacionB
             "c.idCargaAcademicaFk.idOpcionFk.oportunidadOpcion as opd " +
             "from CalificacionBcode c where c.idCargaAcademicaFk.numeroControlFk.id=:numero")
     List<Tuple> buscarCargaByNumC(@Param("numero") String numero);
+
+    @Query("select " +
+            "c.idCargaAcademicaFk.idHorarioFk.claveCarreraFk.descripcionCarrera as carrera," +
+            "c.idCargaAcademicaFk.semestreLlevado as semestre," +
+            "c.idCargaAcademicaFk.idHorarioFk.claveMateriaFk.id as clavecrr," +
+            "c.idCargaAcademicaFk.idHorarioFk.claveMateriaFk.nombreMateria as materia," +
+            "c.idCargaAcademicaFk.idHorarioFk.idGrupoFk.numeroGrupo as grupo," +
+            "c.idCargaAcademicaFk.idHorarioFk.claveMateriaFk.totalCreditos as totalc," +
+            "c.calificacion as calificacion, c.nivelDesempenio as niveld," +
+            "c.idCargaAcademicaFk.idOpcionFk.descripcionOpcion as op," +
+            "c.idCargaAcademicaFk.idOpcionFk.oportunidadOpcion as opd " +
+            "from CalificacionBcode c " +
+            "where c.idCargaAcademicaFk.numeroControlFk.id=:numero " +
+            "and c.idCargaAcademicaFk.semestreLlevado=:semestre")
+    List<Tuple> buscarCargaByNumCAndSemestre(@Param("numero") String numero, @Param("semestre") String semestre);
 }

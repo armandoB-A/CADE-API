@@ -1,9 +1,11 @@
 package com.bcode.cade.entities;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Table(name = "ADMINISTRATIVO_BCODE")
+@Table(name = "administrativo_bcode")
 public class AdministrativoBcode {
     @Id
     @Column(name = "id_administrativo", nullable = false)
@@ -36,6 +38,30 @@ public class AdministrativoBcode {
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "id_rol_fk", nullable = false)
     private RolBcode idRolFk;
+
+    @ManyToMany
+    @JoinTable(name = "detalle_administrativo_bcode",
+            joinColumns = @JoinColumn(name = "id_administrativo_fk"),
+            inverseJoinColumns = @JoinColumn(name = "clave_carrera_fk"))
+    private List<CarreraBcode> carreraBcodes = new ArrayList<>();
+
+    public List<CarreraBcode> getCarreraBcodes() {
+        return carreraBcodes;
+    }
+
+    public void setCarreraBcodes(List<CarreraBcode> carreraBcodes) {
+        this.carreraBcodes = carreraBcodes;
+    }/*
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "id_administrativo_fk")
+    private List<HorarioBcode> horarioBcodes = new ArrayList<>();
+
+    public List<HorarioBcode> getHorarioBcodes() {
+        return horarioBcodes;
+    }
+
+    public void setHorarioBcodes(List<HorarioBcode> horarioBcodes) {
+        this.horarioBcodes = horarioBcodes;
+    }*/
 
     public Integer getId() {
         return id;

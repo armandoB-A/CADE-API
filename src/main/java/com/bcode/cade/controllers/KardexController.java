@@ -1,6 +1,8 @@
 package com.bcode.cade.controllers;
 
 import com.bcode.cade.dto.AlumnoBcodeDto;
+import com.bcode.cade.entities.AlumnoBcode;
+import com.bcode.cade.entities.CargaAcademicaBcode;
 import com.bcode.cade.services.KardexService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,15 +22,15 @@ public class KardexController {
     private KardexService kardexService;
 
     @GetMapping()
-    public ResponseEntity<AlumnoBcodeDto> getKardex(@RequestParam("numc") String numeroc){
-        return new ResponseEntity<>(kardexService.getK(numeroc), HttpStatus.OK);
+    public ResponseEntity<AlumnoBcodeDto> getKardex(
+            @RequestParam(value = "numc") String numeroc,
+            @RequestParam(value = "semestre", required = false) String semestre
+    ) {
+        if (semestre != null) {
+            return new ResponseEntity<>(kardexService.getK(numeroc, semestre), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(kardexService.getKardex(numeroc), HttpStatus.OK);
+        }
     }
-    /*
-    @GetMapping("/carrera")
-    public ResponseEntity<List<CargaAcademicaBcodeDto>> getKardex1(
-            @RequestParam("numc") String numeroc,
-            @RequestParam("carrera") String carrera){
 
-        return new ResponseEntity<>(kardexService.getKs(numeroc, carrera), HttpStatus.OK);
-    }*/
 }
