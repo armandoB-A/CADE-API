@@ -10,6 +10,8 @@ import java.util.List;
 
 @Repository
 public interface AdministrativoBcodeRepository extends JpaRepository<AdministrativoBcode, Integer> {
+    @Query("select a from AdministrativoBcode a where a.nombreAdministrativo = ?1 and a.contraseniaAdministrativo = ?2")
+    AdministrativoBcode findByNombreAdministrativoAndContraseniaAdministrativo(String nombreAdministrativo, String contraseniaAdministrativo);
     @Query("select a from AdministrativoBcode a inner join a.carreraBcodes carreraBcodes " +
             "where carreraBcodes.descripcionCarrera = ?1")
     List<AdministrativoBcode> findByCarreraBcodes_DescripcionCarrera(String descripcionCarrera);
