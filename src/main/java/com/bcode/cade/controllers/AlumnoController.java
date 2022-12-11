@@ -1,6 +1,5 @@
 package com.bcode.cade.controllers;
 
-import com.bcode.cade.dto.AlumnoBcodeDto;
 import com.bcode.cade.dto.AlumnoSaveBcodeDto;
 import com.bcode.cade.entities.AlumnoBcode;
 import com.bcode.cade.services.AlumnoService;
@@ -35,6 +34,11 @@ public class AlumnoController {
     @PostMapping("/registro")
     public ResponseEntity<AlumnoSaveBcodeDto> saveAlumno (@RequestBody AlumnoSaveBcodeDto alumnoSaveBcodeDto){
         return new ResponseEntity<>(alumnoService.registrarAlumno(alumnoSaveBcodeDto), HttpStatus.CREATED);
+    }
+    @GetMapping("/auth")
+    public ResponseEntity<AlumnoSaveBcodeDto> authAdmin(@RequestParam(value = "id") String nom,
+                                                    @RequestParam(value = "contra") String contra) {
+        return new ResponseEntity<>(alumnoService.authuAdmin(nom, contra), HttpStatus.OK);
     }
 /*
     @GetMapping("/auth")

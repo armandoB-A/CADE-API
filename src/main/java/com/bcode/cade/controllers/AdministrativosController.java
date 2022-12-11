@@ -15,6 +15,7 @@ import javax.websocket.server.PathParam;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/administrativo")
 public class AdministrativosController {
     @Autowired
@@ -40,9 +41,16 @@ public class AdministrativosController {
             @PathVariable(value = "carrera") String carrera) {
         return new ResponseEntity<>(administrativoService.getDocenteByCarrera(carrera), HttpStatus.OK);
     }
+
     @GetMapping("/auth")
-    public ResponseEntity<AdministrativoBcode> authAdmin(@RequestBody AdministrativoAuth admin){
-        return new ResponseEntity<>(administrativoService.authuAdmin(admin),HttpStatus.OK);
+    public ResponseEntity<AdministrativoBcode> authAdmin(@RequestBody AdministrativoAuth admin) {
+        return new ResponseEntity<>(administrativoService.authuAdmin(admin), HttpStatus.OK);
+    }
+
+    @GetMapping("/authv2")
+    public ResponseEntity<AdministrativoBcode> authAdmin2(@RequestParam(value = "nombre") String nom,
+                                                          @RequestParam(value = "contra") String contra) {
+        return new ResponseEntity<>(administrativoService.authuAdmin(nom, contra), HttpStatus.OK);
     }
     /*
     @PostMapping("/registro")

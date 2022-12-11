@@ -1,5 +1,6 @@
 package com.bcode.cade.services;
 
+import com.bcode.cade.dto.AdministrativoAuth;
 import com.bcode.cade.dto.AlumnoBcodeDto;
 import com.bcode.cade.dto.AlumnoSaveBcodeDto;
 import com.bcode.cade.entities.AlumnoBcode;
@@ -12,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -30,8 +30,8 @@ public class AlumnoService {
 
     public AlumnoBcode getAlumnoBcodeRepository(String numC) {
         AlumnoBcode alumnoBcode = null;
-        if (alumnoExist(numC)){
-            alumnoBcode= alumnoBcodeRepository.findById(numC).get();
+        if (alumnoExist(numC)) {
+            alumnoBcode = alumnoBcodeRepository.findById(numC).get();
         }
         return alumnoBcode;
     }
@@ -42,11 +42,12 @@ public class AlumnoService {
 
     public AlumnoBcode getAlumnoBcodeRepository(String numC, String carrera) {
         AlumnoBcode alumnoBcode = null;
-        if (alumnoExist(numC)){
-            alumnoBcode= alumnoBcodeRepository.findByIdAndAndClaveCarreraFk_DescripcionCarrera(numC, carrera);
+        if (alumnoExist(numC)) {
+            alumnoBcode = alumnoBcodeRepository.findByIdAndAndClaveCarreraFk_DescripcionCarrera(numC, carrera);
         }
         return alumnoBcode;
     }
+
     public List<AlumnoBcode> getAlumnoBcodeRepository() {
         try {
             return alumnoBcodeRepository.findAll();
@@ -75,9 +76,16 @@ public class AlumnoService {
         }
     }
 
+    public AlumnoSaveBcodeDto authuAdmin(String id, String contra) {
+        try {
+            return entityToDto(alumnoBcodeRepository.findByIdAndContraseniaAlumno(id, contra));
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "no se encontro alumno ");
+        }
+    }
     //-----------------------------------
 
-    private AlumnoSaveBcodeDto entityToDto(AlumnoBcode alumno){
+    private AlumnoSaveBcodeDto entityToDto(AlumnoBcode alumno) {
         return new AlumnoSaveBcodeDto(
                 alumno.getId(),
                 alumno.getNombreAlumno(),
@@ -93,6 +101,7 @@ public class AlumnoService {
         );
 
     }
+
     private AlumnoBcode dtoToEntity(AlumnoSaveBcodeDto alumnoSaveBcodeDto, AlumnoBcode alumnoBcode) {
         alumnoBcode.setId(alumnoSaveBcodeDto.getId());
         return getAlumnoBcode(alumnoSaveBcodeDto, alumnoBcode);

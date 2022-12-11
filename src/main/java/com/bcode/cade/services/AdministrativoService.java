@@ -52,4 +52,13 @@ public class AdministrativoService {
     public List<HorarioBcode> getAdministrativoMaterias(Integer id) {
         return horarioBcodeRepository.findByIdAdministrativoFk_Id(id);
     }
+
+    public AdministrativoBcode authuAdmin(String nom, String contra) {
+        AdministrativoBcode ad = administrativoBcodeRepository.findByNombreAdministrativoAndContraseniaAdministrativo(nom, contra);
+        if (ad == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "no se encontro administrativo ");
+        } else {
+            return ad;
+        }
+    }
 }
