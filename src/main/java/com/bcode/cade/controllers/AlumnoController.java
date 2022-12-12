@@ -47,7 +47,7 @@ public class AlumnoController {
     }
 */
     @PutMapping("/actualizar")
-    public ResponseEntity<AlumnoBcode> updateAlumno (
+    public ResponseEntity<AlumnoSaveBcodeDto> updateAlumno (
             @RequestBody AlumnoSaveBcodeDto alumnoSaveBcodeDto,
             @RequestParam(value = "numc") String numeroc){
         return new ResponseEntity<>(alumnoService.actualizarAlumno(alumnoSaveBcodeDto, numeroc), HttpStatus.ACCEPTED);
