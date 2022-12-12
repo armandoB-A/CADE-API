@@ -63,14 +63,16 @@ public class AlumnoService {
 
     public AlumnoSaveBcodeDto actualizarAlumno(AlumnoSaveBcodeDto alumnoSaveBcodeDto, String numC) {
         AlumnoBcode alumnoBcode = null;
-        if (alumnoExist(numC)) {
-            alumnoBcode = alumnoBcodeRepository.findById(numC).get();
-        }
-        try {
-            var al=dtoToEntity(alumnoSaveBcodeDto, alumnoBcode, numC);
-            return entityToDto(alumnoBcodeRepository.saveAndFlush(al));
-        } catch (Exception e) {
+        if (!alumnoExist(numC)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "no se encontro alumno ");
+        }
+        alumnoBcode = alumnoBcodeRepository.findById(numC).get();
+        try {
+            AlumnoBcode al=dtoToEntity(alumnoSaveBcodeDto, alumnoBcode, numC);
+            AlumnoBcode alumnoBcode1=alumnoBcodeRepository.saveAndFlush(al);
+            return entityToDto(alumnoBcode1);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "paso algo master ");
         }
 
     }
