@@ -58,7 +58,9 @@ public class AlumnoService {
 
     public AlumnoSaveBcodeDto registrarAlumno(AlumnoSaveBcodeDto alumnoSaveBcodeDto) {
         AlumnoBcode alumnoBcode = new AlumnoBcode();
-        return entityToDto(alumnoBcodeRepository.saveAndFlush(dtoToEntity(alumnoSaveBcodeDto, alumnoBcode)));
+        AlumnoBcode alumnoBcodeOR = new AlumnoBcode();
+        alumnoBcodeOR = traerAlumnoActualizado(alumnoBcodeRepository.saveAndFlush(dtoToEntity(alumnoSaveBcodeDto, alumnoBcode)));
+        return entityToDto(alumnoBcodeOR);
     }
 
     public AlumnoSaveBcodeDto actualizarAlumno(AlumnoSaveBcodeDto alumnoSaveBcodeDto, String numC) {
@@ -68,8 +70,8 @@ public class AlumnoService {
         }
         alumnoBcode = alumnoBcodeRepository.findById(numC).get();
         try {
-            AlumnoBcode al=dtoToEntity(alumnoSaveBcodeDto, alumnoBcode, numC);
-            AlumnoBcode alumnoBcode1=alumnoBcodeRepository.saveAndFlush(al);
+            AlumnoBcode al = dtoToEntity(alumnoSaveBcodeDto, alumnoBcode, numC);
+            AlumnoBcode alumnoBcode1 = alumnoBcodeRepository.saveAndFlush(al);
             return entityToDto(alumnoBcode1);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "paso algo master ");
@@ -168,5 +170,8 @@ public class AlumnoService {
         }
     }
 
-
+    private AlumnoBcode traerAlumnoActualizado(AlumnoBcode alumnoBcode) {
+        return alumnoBcodeRepository.findByNombreAlumnoAndApe1AlumnoAndApe2AlumnoAndTelefonoAlumnoAndCorreoAlumnoAndDireccionAlumnoAndContraseniaAlumno(
+                alumnoBcode.getNombreAlumno(), alumnoBcode.getApe1Alumno(), alumnoBcode.getApe2Alumno(), alumnoBcode.getTelefonoAlumno(), alumnoBcode.getCorreoAlumno(), alumnoBcode.getDireccionAlumno(), alumnoBcode.getContraseniaAlumno());
+    }
 }
