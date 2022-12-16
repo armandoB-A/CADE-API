@@ -15,7 +15,6 @@ import javax.websocket.server.PathParam;
 import java.util.List;
 
 @RestController
-@CrossOrigin
 @RequestMapping("/administrativo")
 public class AdministrativosController {
     @Autowired
