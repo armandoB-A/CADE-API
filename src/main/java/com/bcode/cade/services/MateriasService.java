@@ -1,7 +1,7 @@
 package com.bcode.cade.services;
 
 import com.bcode.cade.dto.HorarioBcodeDto;
-import com.bcode.cade.entities.HorarioBcode;
+import com.bcode.cade.dto.horarioinfo.HorarioBcodeInfo;
 import com.bcode.cade.repository.HorarioBcodeRepository;
 import com.bcode.cade.repository.MateriaBcodeRepository;
 import org.modelmapper.ModelMapper;
@@ -27,5 +27,10 @@ public class MateriasService {
                 .forEach(horarioBcode -> listD.add(modelMapper.map(horarioBcode, HorarioBcodeDto.class)));
 
         return listD;
+    }
+    public List<HorarioBcodeInfo> getMateriasByCarrera2(String carrera) {
+
+        return horarioBcodeRepository
+                .findByClaveCarreraFk_Id(carrera);
     }
 }
