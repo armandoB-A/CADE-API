@@ -4,6 +4,7 @@ import com.bcode.cade.dto.AdministrativoAuth;
 import com.bcode.cade.entities.AdministrativoBcode;
 import com.bcode.cade.entities.HorarioBcode;
 import com.bcode.cade.repository.AdministrativoBcodeRepository;
+import com.bcode.cade.repository.CargaAcademicaBcodeRepository;
 import com.bcode.cade.repository.DetalleAdministrativoBcodeRepository;
 import com.bcode.cade.repository.HorarioBcodeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,8 @@ public class AdministrativoService {
     private DetalleAdministrativoBcodeRepository detalleAdministrativoBcodeRepository;
     @Autowired
     private HorarioBcodeRepository horarioBcodeRepository;
+    @Autowired
+    private CargaAcademicaBcodeRepository cargaAcademicaBcodeRepository;
 
     /*
     public AdministrativoBcode getAdministrativoBcodeRepository() {
@@ -49,7 +52,7 @@ public class AdministrativoService {
         }
     }
 
-    public List<HorarioBcode> getAdministrativoMaterias(Integer id) {
+    public List<String> getAdministrativoMaterias(Integer id) {
         return horarioBcodeRepository.findByIdAdministrativoFk_Id(id);
     }
 
@@ -58,6 +61,19 @@ public class AdministrativoService {
         if (ad == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "no se encontro administrativo ");
         } else {
+            return ad;
+        }
+    }
+
+    public List<String> getAdministrativoGrupos(Integer id_admin, String clave) {
+        return horarioBcodeRepository.findByGrupoByMateriaFk_Id(id_admin, clave);
+    }
+
+    public List<String> getAdministrativoAlumnoGrupo(Integer idAdmin, String claveMateria, String grupo) {
+        List<String> ad = cargaAcademicaBcodeRepository.findAlumnosByGrupo(idAdmin, claveMateria, grupo);
+        if (ad == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No se Encontrarion Alumnos ");
+        }else{
             return ad;
         }
     }
