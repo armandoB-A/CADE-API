@@ -30,9 +30,22 @@ public class AdministrativosController {
         return new ResponseEntity<>(administrativoService.getAdministrativo(id), HttpStatus.OK);
     }
 
-    @GetMapping("/id/{id_admin}/grupos")
-    public ResponseEntity<List<HorarioBcode>> getAdminstrativo_cursos(@PathVariable(value = "id_admin") Integer id) {
+    @GetMapping("/id/{id_admin}/materias")
+    public ResponseEntity<List<String>> getAdminstrativo_cursos(@PathVariable(value = "id_admin") Integer id) {
         return new ResponseEntity<>(administrativoService.getAdministrativoMaterias(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/id/{id_admin}/{materia}/grupos")
+    public ResponseEntity<List<String>> getGrupos(@PathVariable(value="id_admin") Integer id_admin,
+            @PathVariable(value="materia")String clave){
+        return new ResponseEntity<>(administrativoService.getAdministrativoGrupos(id_admin, clave), HttpStatus.OK);
+    }
+
+    @GetMapping("/id/{id_admin}/{materia}/{grupo}/alumnos")
+    public ResponseEntity<List<String>> getAlumnos(@PathVariable(value="id_admin") Integer id_admin,
+                                                   @PathVariable(value="materia") String clave_materia,
+                                                   @PathVariable(value="grupo") String grupo){
+        return new ResponseEntity<>(administrativoService.getAdministrativoAlumnoGrupo(id_admin, clave_materia, grupo), HttpStatus.OK);
     }
 
     @GetMapping("/docente_carrera/{carrera}")
@@ -51,6 +64,7 @@ public class AdministrativosController {
                                                           @RequestParam(value = "contra") String contra) {
         return new ResponseEntity<>(administrativoService.authuAdmin(nom, contra), HttpStatus.OK);
     }
+
     /*
     @PostMapping("/registro")
     public ResponseEntity<AlumnoBcode> saveAlumno (@RequestBody AlumnoSaveBcodeDto alumnoSaveBcodeDto){

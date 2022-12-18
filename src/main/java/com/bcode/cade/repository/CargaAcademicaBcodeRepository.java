@@ -9,6 +9,12 @@ import javax.persistence.Tuple;
 import java.util.List;
 
 public interface CargaAcademicaBcodeRepository extends JpaRepository<CargaAcademicaBcode, Long> {
+
+    @Query("select h.numeroControlFk.nombreAlumno from CargaAcademicaBcode h " +
+            "where h.idHorarioFk.idAdministrativoFk.id = ?1 " +
+            "and h.idHorarioFk.claveMateriaFk.id = ?2 " +
+            "and h.idHorarioFk.idGrupoFk.numeroGrupo = ?3")
+    List<String> findAlumnosByGrupo(Integer idAdmin, String claveMateria, String grupo);
     /*@Query("select " +
             "c.idHorarioFk.claveCarreraFk.descripcionCarrera as carrera," +
             "c.semestreLlevado as semestre," +
