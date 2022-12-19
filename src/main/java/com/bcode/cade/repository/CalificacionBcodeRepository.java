@@ -10,6 +10,9 @@ import javax.persistence.Tuple;
 import java.util.List;
 @Repository
 public interface CalificacionBcodeRepository extends JpaRepository<CalificacionBcode, Long> {
+    @Query("select c from CalificacionBcode c where c.idCargaAcademicaFk.idHorarioFk.id = ?1")
+    CalificacionBcode findByIdCargaAcademicaFk_IdHorarioFk_Id(Long id);
+
     @Query("select " +
             "c.idCargaAcademicaFk.idHorarioFk.claveCarreraFk.descripcionCarrera as carrera," +
             "c.idCargaAcademicaFk.semestreLlevado as semestre," +

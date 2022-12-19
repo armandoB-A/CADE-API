@@ -2,6 +2,7 @@ package com.bcode.cade.controllers;
 
 import com.bcode.cade.dto.AdministrativoAuth;
 import com.bcode.cade.dto.CalificacionSaveBcodeDto;
+import com.bcode.cade.dto.CalificacionSaveBcodeDtoV1;
 import com.bcode.cade.entities.AdministrativoBcode;
 import com.bcode.cade.entities.CalificacionBcode;
 import com.bcode.cade.services.AdministrativoService;
@@ -65,8 +66,8 @@ public class AdministrativosController {
     }
 
     @PostMapping("/registro_calificacion")
-    public ResponseEntity<CalificacionBcode> saveCalificacion (@RequestBody CalificacionBcode calificacionSaveBcode){
-        return new ResponseEntity<>(administrativoService.registrarCalificacion(calificacionSaveBcode), HttpStatus.CREATED);
+    public ResponseEntity<CalificacionBcode> saveCalificacion (@RequestBody CalificacionSaveBcodeDtoV1 calificacion){
+        return new ResponseEntity<>(administrativoService.registrarCalificacion(calificacion), HttpStatus.ACCEPTED);
     }
 
     /*

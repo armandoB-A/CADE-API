@@ -2,8 +2,10 @@ package com.bcode.cade.services;
 
 import com.bcode.cade.dto.AdministrativoAuth;
 import com.bcode.cade.dto.CalificacionSaveBcodeDto;
+import com.bcode.cade.dto.CalificacionSaveBcodeDtoV1;
 import com.bcode.cade.entities.AdministrativoBcode;
 import com.bcode.cade.entities.CalificacionBcode;
+import com.bcode.cade.entities.HorarioBcode;
 import com.bcode.cade.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -78,12 +80,21 @@ public class AdministrativoService {
         }
     }
 
-    public CalificacionBcode registrarCalificacion(CalificacionBcode calificacionSaveBcode) {
-        return calificacionBcodeRepository.save(calificacionSaveBcode);
+    public CalificacionBcode registrarCalificacion(CalificacionSaveBcodeDtoV1 calificacion) {
+        return calificacionBcodeRepository.save(dtoToEntity(calificacion));
         /*CalificacionBcode calificacionBcode = new CalificacionBcode();
         CalificacionBcode calificacionBcodeOR = new CalificacionBcode();
         calificacionBcodeOR = getCalificacion(calificacionBcodeRepository.saveAndFlush(dtoToEntity(calificacionSaveBcodeDto, calificacionBcode)));
         return*/
+    }
+
+    private CalificacionBcode dtoToEntity(CalificacionSaveBcodeDtoV1 calificacion) {
+        CalificacionBcode calificacionBcode = new CalificacionBcode();
+        calificacionBcode.setIdCargaAcademicaFk(cargaAcademicaBcodeRepository.findById(calificacion.getIdCargaAcademicaFkId()).get());
+        calificacionBcode.setCalificacion(calificacion.getCalificacion());
+        calificacionBcode.setNivelDesempenio(calificacion.getNivelDesempenio());
+        calificacionBcode.setStatusCalificacion('1');
+        return calificacionBcode;
     }
 
     /*private CalificacionBcode dtoToEntity(CalificacionSaveBcodeDto calificacionSaveBcodeDto, CalificacionBcode calificacionBcode) {
