@@ -1,12 +1,10 @@
 package com.bcode.cade.services;
 
 import com.bcode.cade.dto.AdministrativoAuth;
+import com.bcode.cade.dto.CalificacionSaveBcodeDto;
 import com.bcode.cade.entities.AdministrativoBcode;
-import com.bcode.cade.entities.HorarioBcode;
-import com.bcode.cade.repository.AdministrativoBcodeRepository;
-import com.bcode.cade.repository.CargaAcademicaBcodeRepository;
-import com.bcode.cade.repository.DetalleAdministrativoBcodeRepository;
-import com.bcode.cade.repository.HorarioBcodeRepository;
+import com.bcode.cade.entities.CalificacionBcode;
+import com.bcode.cade.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -24,6 +22,8 @@ public class AdministrativoService {
     private HorarioBcodeRepository horarioBcodeRepository;
     @Autowired
     private CargaAcademicaBcodeRepository cargaAcademicaBcodeRepository;
+    @Autowired
+    private CalificacionBcodeRepository calificacionBcodeRepository;
 
     /*
     public AdministrativoBcode getAdministrativoBcodeRepository() {
@@ -77,4 +77,41 @@ public class AdministrativoService {
             return ad;
         }
     }
+
+    public CalificacionBcode registrarCalificacion(CalificacionBcode calificacionSaveBcode) {
+        return calificacionBcodeRepository.save(calificacionSaveBcode);
+        /*CalificacionBcode calificacionBcode = new CalificacionBcode();
+        CalificacionBcode calificacionBcodeOR = new CalificacionBcode();
+        calificacionBcodeOR = getCalificacion(calificacionBcodeRepository.saveAndFlush(dtoToEntity(calificacionSaveBcodeDto, calificacionBcode)));
+        return*/
+    }
+
+    /*private CalificacionBcode dtoToEntity(CalificacionSaveBcodeDto calificacionSaveBcodeDto, CalificacionBcode calificacionBcode) {
+        calificacionBcode.setId(calificacionSaveBcodeDto.getId());
+        return getCalificacionBcode(calificacionSaveBcodeDto, calificacionBcode);
+    }*/
+
+    /*private CalificacionBcode getCalificacionBcode(CalificacionSaveBcodeDto calificacionSaveBcodeDto, CalificacionBcode calificacionBcode) {
+        try {
+            if (calificacionSaveBcodeDto.getIdCargaAcademicaFk() == null) {
+                calificacionBcode.setIdCargaAcademicaFk(cargaAcademicaBcodeRepository.findById(calificacionSaveBcodeDto.getIdCargaAcademicaFk()).get());
+            }
+        }catch(Exception ex){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error en el id de la carga academica, no existe o esta mal escrita", ex);
+        }
+
+        if(calificacionSaveBcodeDto.getCalificacion() != null)
+            calificacionBcode.setCalificacion(calificacionSaveBcodeDto.getCalificacion());
+
+        if(calificacionSaveBcodeDto.getNivelDesempenio() != null)
+            calificacionBcode.setNivelDesempenio(calificacionSaveBcodeDto.getNivelDesempenio());
+
+        calificacionBcode.setStatusCalificacion('1');
+        return calificacionBcode;
+    }*/
+
+    /*private CalificacionBcode getCalificacion(CalificacionBcode calificacionBcode) {
+        return calificacionBcodeRepository.findByAll(calificacionBcode.getCalificacion(),
+                calificacionBcode.getNivelDesempenio())
+    }*/
 }

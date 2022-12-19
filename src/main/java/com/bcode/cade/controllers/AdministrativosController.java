@@ -1,17 +1,15 @@
 package com.bcode.cade.controllers;
 
 import com.bcode.cade.dto.AdministrativoAuth;
-import com.bcode.cade.dto.AlumnoSaveBcodeDto;
+import com.bcode.cade.dto.CalificacionSaveBcodeDto;
 import com.bcode.cade.entities.AdministrativoBcode;
-import com.bcode.cade.entities.AlumnoBcode;
-import com.bcode.cade.entities.HorarioBcode;
+import com.bcode.cade.entities.CalificacionBcode;
 import com.bcode.cade.services.AdministrativoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.PathParam;
 import java.util.List;
 
 @RestController
@@ -63,6 +61,11 @@ public class AdministrativosController {
     public ResponseEntity<AdministrativoBcode> authAdmin2(@RequestParam(value = "nombre") String nom,
                                                           @RequestParam(value = "contra") String contra) {
         return new ResponseEntity<>(administrativoService.authuAdmin(nom, contra), HttpStatus.OK);
+    }
+
+    @PostMapping("/registro_calificacion")
+    public ResponseEntity<CalificacionBcode> saveCalificacion (@RequestBody CalificacionBcode calificacionSaveBcode){
+        return new ResponseEntity<>(administrativoService.registrarCalificacion(calificacionSaveBcode), HttpStatus.CREATED);
     }
 
     /*

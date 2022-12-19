@@ -37,4 +37,26 @@ public interface CalificacionBcodeRepository extends JpaRepository<CalificacionB
             "where c.idCargaAcademicaFk.numeroControlFk.id=:numero " +
             "and c.idCargaAcademicaFk.semestreLlevado=:semestre")
     List<Tuple> buscarCargaByNumCAndSemestre(@Param("numero") String numero, @Param("semestre") String semestre);
+
+    @Query("select h.id, " +
+            "h.idCargaAcademicaFk.numeroControlFk.id, " +
+            "h.idCargaAcademicaFk.numeroControlFk.nombreAlumno, " +
+            "h.idCargaAcademicaFk.idHorarioFk.claveMateriaFk.nombreMateria, " +
+            "h.idCargaAcademicaFk.idHorarioFk.idGrupoFk.numeroGrupo, " +
+            "h.idCargaAcademicaFk.idOpcionFk.descripcionOpcion, " +
+            "h.calificacion " +
+            "from CalificacionBcode h " +
+            "where h.statusCalificacion = '1'")
+    List<String> findSomeFields();
+
+    @Query("select h.id, " +
+            "h.idCargaAcademicaFk.numeroControlFk.id, " +
+            "h.idCargaAcademicaFk.numeroControlFk.nombreAlumno, " +
+            "h.idCargaAcademicaFk.idHorarioFk.claveMateriaFk.nombreMateria, " +
+            "h.idCargaAcademicaFk.idHorarioFk.idGrupoFk.numeroGrupo, " +
+            "h.idCargaAcademicaFk.idOpcionFk.descripcionOpcion, " +
+            "h.calificacion " +
+            "from CalificacionBcode h " +
+            "where h.statusCalificacion = '0'")
+    List<String> findEmptyFields();
 }
