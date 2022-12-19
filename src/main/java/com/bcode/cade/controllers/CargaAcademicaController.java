@@ -22,4 +22,8 @@ public class CargaAcademicaController {
     ) {
         return new ResponseEntity<>(cargaAcademicaService.saveCarga(cargaT), HttpStatus.ACCEPTED);
     }
+    @GetMapping("/exist/id/{id}/")
+    public ResponseEntity<Boolean> getCargaIfExist(@PathVariable("id") String numeroC){
+        return new ResponseEntity<>(cargaAcademicaService.getExist(numeroC), HttpStatus.OK);
+    }
 }
