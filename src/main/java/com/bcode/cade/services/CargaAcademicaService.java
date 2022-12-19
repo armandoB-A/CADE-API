@@ -1,6 +1,7 @@
 package com.bcode.cade.services;
 
 import com.bcode.cade.dto.CargaAcademicaBcodeDto;
+import com.bcode.cade.dto.CargaAcademicaBcodeDto1;
 import com.bcode.cade.entities.CargaAcademicaBcode;
 import com.bcode.cade.repository.AlumnoBcodeRepository;
 import com.bcode.cade.repository.CargaAcademicaBcodeRepository;
@@ -23,14 +24,14 @@ public class CargaAcademicaService {
     @Autowired
     private OpcionBcodeRepository opcionBcodeRepository;
 
-    public CargaAcademicaBcode saveCarga(CargaAcademicaBcodeDto cargaT) {
+    public CargaAcademicaBcode saveCarga(CargaAcademicaBcodeDto1 cargaT) {
         return cargaAcademicaBcodeRepository.save(dtoToEntity(cargaT));
     }
 
-    private CargaAcademicaBcode dtoToEntity(CargaAcademicaBcodeDto cargaT) {
+    private CargaAcademicaBcode dtoToEntity(CargaAcademicaBcodeDto1 cargaT) {
         CargaAcademicaBcode cargaAcademicaBcode = new CargaAcademicaBcode();
         cargaAcademicaBcode.setNumeroControlFk(alumnoBcodeRepository.findById(cargaT.getNumeroControlFkId()).get());
-        cargaAcademicaBcode.setIdHorarioFk(horarioBcodeRepository.findById(cargaT.getIdHorarioFkId()).get());
+        cargaAcademicaBcode.setIdHorarioFk(horarioBcodeRepository.findByClaveMateriaFk_Id(cargaT.getIdHorarioFkClaveMateriaFkId()));
         cargaAcademicaBcode.setIdOpcionFk(opcionBcodeRepository.findById(cargaT.getIdOpcionFkId()).get());
         cargaAcademicaBcode.setStatusCargaAcademica(cargaT.getStatusCargaAcademica());
         cargaAcademicaBcode.setSemestreLlevado(cargaT.getSemestreLlevado());

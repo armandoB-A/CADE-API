@@ -10,6 +10,8 @@ import java.util.List;
 
 @Repository
 public interface HorarioBcodeRepository extends JpaRepository<HorarioBcode, Long> {
+    @Query("select h from HorarioBcode h where h.claveMateriaFk.id = ?1")
+    HorarioBcode findByClaveMateriaFk_Id(String id);
     @Query("select h from HorarioBcode h where h.claveCarreraFk.id = ?1 order by h.periodoSemestre")
     List<HorarioBcode> findByClaveCarreraFk_IdOrderByPeriodoSemestreAsc(String id);
     @Query("select h from HorarioBcode h where h.idAdministrativoFk.id = ?1")
