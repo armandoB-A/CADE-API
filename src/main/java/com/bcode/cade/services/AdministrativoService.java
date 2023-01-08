@@ -1,6 +1,7 @@
 package com.bcode.cade.services;
 
 import com.bcode.cade.dto.AdministrativoAuth;
+import com.bcode.cade.dto.horarioinfo.GruposAdministrativo;
 import com.bcode.cade.entities.AdministrativoBcode;
 import com.bcode.cade.entities.HorarioBcode;
 import com.bcode.cade.repository.*;
@@ -61,7 +62,7 @@ public class AdministrativoService {
             return ad;
         }
     }
-    public List<HorarioBcodeInfo> getMateriasByIdAdmin(Integer id_admin) {
+    public List<GruposAdministrativo> getMateriasByIdAdmin(Integer id_admin) {
         return horarioBcodeRepository.MateriasByIdAdmin(id_admin);
     }
 

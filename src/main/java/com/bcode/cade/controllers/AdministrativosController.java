@@ -2,6 +2,7 @@ package com.bcode.cade.controllers;
 
 import com.bcode.cade.dto.AdministrativoAuth;
 import com.bcode.cade.dto.AlumnoSaveBcodeDto;
+import com.bcode.cade.dto.horarioinfo.GruposAdministrativo;
 import com.bcode.cade.entities.AdministrativoBcode;
 import com.bcode.cade.entities.AlumnoBcode;
 import com.bcode.cade.entities.HorarioBcode;
@@ -43,7 +44,7 @@ public class AdministrativosController {
         return new ResponseEntity<>(administrativoService.getAdministrativoGrupos(id_admin, clave), HttpStatus.OK);
     }
     @GetMapping("materias/id/{id_admin}")
-    public ResponseEntity<List<HorarioBcodeInfo>> getGrupos(@PathVariable(value="id_admin") Integer id_admin){
+    public ResponseEntity<List<GruposAdministrativo>> getGrupos(@PathVariable(value="id_admin") Integer id_admin){
         return new ResponseEntity<>(administrativoService.getMateriasByIdAdmin(id_admin), HttpStatus.OK);
     }
 
