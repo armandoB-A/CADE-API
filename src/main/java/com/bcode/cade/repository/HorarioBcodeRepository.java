@@ -20,6 +20,9 @@ public interface HorarioBcodeRepository extends JpaRepository<HorarioBcode, Long
             "h.claveMateriaFk.nombreMateria, " +
             "h.idGrupoFk.numeroGrupo from HorarioBcode h where h.idAdministrativoFk.id = ?1")
     List<String> findByIdAdministrativoFk_Id(Integer id);
+
+    @Query("select h from HorarioBcode h where h.idAdministrativoFk.id = ?1")
+    List<com.bcode.cade.repository.HorarioBcodeInfo> MateriasByIdAdmin(Integer id);
     @Query("select h.claveMateriaFk.id, " +
             "h.claveMateriaFk.nombreMateria, " +
             "h.idGrupoFk.numeroGrupo from HorarioBcode h where h.idAdministrativoFk.id = ?1")

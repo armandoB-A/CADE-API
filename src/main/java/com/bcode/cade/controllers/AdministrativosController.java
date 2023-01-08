@@ -5,6 +5,7 @@ import com.bcode.cade.dto.AlumnoSaveBcodeDto;
 import com.bcode.cade.entities.AdministrativoBcode;
 import com.bcode.cade.entities.AlumnoBcode;
 import com.bcode.cade.entities.HorarioBcode;
+import com.bcode.cade.repository.HorarioBcodeInfo;
 import com.bcode.cade.services.AdministrativoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,6 +41,10 @@ public class AdministrativosController {
     public ResponseEntity<List<String>> getGrupos(@PathVariable(value="id_admin") Integer id_admin,
             @PathVariable(value="materia")String clave){
         return new ResponseEntity<>(administrativoService.getAdministrativoGrupos(id_admin, clave), HttpStatus.OK);
+    }
+    @GetMapping("materias/id/{id_admin}")
+    public ResponseEntity<List<HorarioBcodeInfo>> getGrupos(@PathVariable(value="id_admin") Integer id_admin){
+        return new ResponseEntity<>(administrativoService.getMateriasByIdAdmin(id_admin), HttpStatus.OK);
     }
 
     @GetMapping("/id/{id_admin}/{materia}/{grupo}/alumnos")

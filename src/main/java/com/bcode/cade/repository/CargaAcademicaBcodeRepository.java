@@ -9,8 +9,8 @@ import javax.persistence.Tuple;
 import java.util.List;
 
 public interface CargaAcademicaBcodeRepository extends JpaRepository<CargaAcademicaBcode, Long> {
-    @Query("select (count(c) > 0) from CargaAcademicaBcode c where c.numeroControlFk.id = ?1")
-    boolean existsByNumeroControlFk_Id(String id);
+
+    boolean existsByNumeroControlFk_IdAndNumeroControlFk_StatusAlumno(String id, Character statusAlumno);
 
     @Query("select h.numeroControlFk.nombreAlumno from CargaAcademicaBcode h " +
             "where h.idHorarioFk.idAdministrativoFk.id = ?1 " +

@@ -3,10 +3,7 @@ package com.bcode.cade.services;
 import com.bcode.cade.dto.AdministrativoAuth;
 import com.bcode.cade.entities.AdministrativoBcode;
 import com.bcode.cade.entities.HorarioBcode;
-import com.bcode.cade.repository.AdministrativoBcodeRepository;
-import com.bcode.cade.repository.CargaAcademicaBcodeRepository;
-import com.bcode.cade.repository.DetalleAdministrativoBcodeRepository;
-import com.bcode.cade.repository.HorarioBcodeRepository;
+import com.bcode.cade.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -63,6 +60,9 @@ public class AdministrativoService {
         } else {
             return ad;
         }
+    }
+    public List<HorarioBcodeInfo> getMateriasByIdAdmin(Integer id_admin) {
+        return horarioBcodeRepository.MateriasByIdAdmin(id_admin);
     }
 
     public List<String> getAdministrativoGrupos(Integer id_admin, String clave) {
