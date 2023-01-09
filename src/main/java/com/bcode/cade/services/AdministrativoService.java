@@ -1,9 +1,13 @@
 package com.bcode.cade.services;
 
 import com.bcode.cade.dto.AdministrativoAuth;
+import com.bcode.cade.dto.CalificacionAlumnosBcodeDto;
+import com.bcode.cade.dto.CarreraBcodeDto;
 import com.bcode.cade.dto.horarioinfo.AlumnosByMaterias;
 import com.bcode.cade.dto.horarioinfo.GruposAdministrativo;
 import com.bcode.cade.entities.AdministrativoBcode;
+import com.bcode.cade.entities.CalificacionBcode;
+import com.bcode.cade.entities.CarreraBcode;
 import com.bcode.cade.entities.HorarioBcode;
 import com.bcode.cade.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,6 +28,8 @@ public class AdministrativoService {
     private HorarioBcodeRepository horarioBcodeRepository;
     @Autowired
     private CargaAcademicaBcodeRepository cargaAcademicaBcodeRepository;
+    @Autowired
+    private CalificacionBcodeRepository calificacionBcodeRepository;
 
     /*
     public AdministrativoBcode getAdministrativoBcodeRepository() {
@@ -86,5 +93,28 @@ public class AdministrativoService {
         }else{
             return ad;
         }
+    }
+
+    public List<CalificacionBcode> calificacion(List<CalificacionAlumnosBcodeDto> calificaciones) {
+        List<CalificacionBcode> cs= new ArrayList<>();
+        cs=obtenerClaif(calificaciones);
+        cs.forEach(s->{
+            System.out.println(s.getId()+"#"+s.getCalificacion());
+        });
+        return calificacionBcodeRepository.saveAll(cs);
+    }
+
+    public List<CalificacionBcode> obtenerClaif(List<CalificacionAlumnosBcodeDto> calif){
+        List<CalificacionBcode> califObjFinal = new ArrayList<>();
+
+        calif.forEach(ob->{
+            CalificacionBcode c = new CalificacionBcode();
+            c.setIdCargaAcademicaFk(cargaAcademicaBcodeRepository.findById(ob.getIdCargaAcademicaFkId()).get());
+            c.setCalificacion(ob.getCalificacion());
+            c.setNivelDesempenio(ob.getNivelDesempenio());
+            c.setStatusCalificacion(ob.getStatusCalificacion());
+            califObjFinal.add(c);
+        });
+        return califObjFinal;
     }
 }

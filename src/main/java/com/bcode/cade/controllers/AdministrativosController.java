@@ -2,10 +2,12 @@ package com.bcode.cade.controllers;
 
 import com.bcode.cade.dto.AdministrativoAuth;
 import com.bcode.cade.dto.AlumnoSaveBcodeDto;
+import com.bcode.cade.dto.CalificacionAlumnosBcodeDto;
 import com.bcode.cade.dto.horarioinfo.AlumnosByMaterias;
 import com.bcode.cade.dto.horarioinfo.GruposAdministrativo;
 import com.bcode.cade.entities.AdministrativoBcode;
 import com.bcode.cade.entities.AlumnoBcode;
+import com.bcode.cade.entities.CalificacionBcode;
 import com.bcode.cade.entities.HorarioBcode;
 import com.bcode.cade.repository.HorarioBcodeInfo;
 import com.bcode.cade.services.AdministrativoService;
@@ -67,6 +69,10 @@ public class AdministrativosController {
     public ResponseEntity<List<AdministrativoBcode>> getAdminstrativoByCarrera(
             @PathVariable(value = "carrera") String carrera) {
         return new ResponseEntity<>(administrativoService.getDocenteByCarrera(carrera), HttpStatus.OK);
+    }
+    @PostMapping("registro-calificaciones")
+    public ResponseEntity<List<CalificacionBcode>> saveAlumno (@RequestBody List<CalificacionAlumnosBcodeDto> calificaciones){
+        return new ResponseEntity<>(administrativoService.calificacion(calificaciones), HttpStatus.CREATED);
     }
 
     @GetMapping("/auth")
