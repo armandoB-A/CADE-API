@@ -2,6 +2,7 @@ package com.bcode.cade.controllers;
 
 import com.bcode.cade.dto.AdministrativoAuth;
 import com.bcode.cade.dto.AlumnoSaveBcodeDto;
+import com.bcode.cade.dto.horarioinfo.AlumnosByMaterias;
 import com.bcode.cade.dto.horarioinfo.GruposAdministrativo;
 import com.bcode.cade.entities.AdministrativoBcode;
 import com.bcode.cade.entities.AlumnoBcode;
@@ -53,6 +54,13 @@ public class AdministrativosController {
                                                    @PathVariable(value="materia") String clave_materia,
                                                    @PathVariable(value="grupo") String grupo){
         return new ResponseEntity<>(administrativoService.getAdministrativoAlumnoGrupo(id_admin, clave_materia, grupo), HttpStatus.OK);
+    }
+
+    @GetMapping("/alumnos/{id_admin}/{materia}/{grupo}/")
+    public ResponseEntity<List<AlumnosByMaterias>> getListAlumnos(@PathVariable(value="id_admin") Integer id_admin,
+                                                                  @PathVariable(value="materia") String clave_materia,
+                                                                  @PathVariable(value="grupo") String grupo){
+        return new ResponseEntity<>(administrativoService.getLisAlum(id_admin, clave_materia, grupo), HttpStatus.OK);
     }
 
     @GetMapping("/docente_carrera/{carrera}")

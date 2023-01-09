@@ -1,6 +1,7 @@
 package com.bcode.cade.services;
 
 import com.bcode.cade.dto.AdministrativoAuth;
+import com.bcode.cade.dto.horarioinfo.AlumnosByMaterias;
 import com.bcode.cade.dto.horarioinfo.GruposAdministrativo;
 import com.bcode.cade.entities.AdministrativoBcode;
 import com.bcode.cade.entities.HorarioBcode;
@@ -72,6 +73,14 @@ public class AdministrativoService {
 
     public List<String> getAdministrativoAlumnoGrupo(Integer idAdmin, String claveMateria, String grupo) {
         List<String> ad = cargaAcademicaBcodeRepository.findAlumnosByGrupo(idAdmin, claveMateria, grupo);
+        if (ad == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No se Encontrarion Alumnos ");
+        }else{
+            return ad;
+        }
+    }
+    public List<AlumnosByMaterias> getLisAlum(Integer idAdmin, String claveMateria, String grupo) {
+        List<AlumnosByMaterias> ad = cargaAcademicaBcodeRepository.findByIdHorarioFk_IdAdministrativoFk_IdAndIdHorarioFk_ClaveMateriaFk_IdAndIdHorarioFk_IdGrupoFk_NumeroGrupoOrderByNumeroControlFk_NombreAlumnoAsc(idAdmin, claveMateria, grupo);
         if (ad == null){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No se Encontrarion Alumnos ");
         }else{
