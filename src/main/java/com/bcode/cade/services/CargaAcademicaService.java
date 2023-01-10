@@ -24,7 +24,7 @@ public class CargaAcademicaService {
     @Autowired
     private OpcionBcodeRepository opcionBcodeRepository;
     public Boolean getExist(String numc) {
-        return cargaAcademicaBcodeRepository.existsByNumeroControlFk_Id(numc);
+        return cargaAcademicaBcodeRepository.existsByNumeroControlFk_IdAndNumeroControlFk_StatusAlumno(numc, '0');
     }
     public CargaAcademicaBcode saveCarga(CargaAcademicaBcodeDto1 cargaT) {
         return cargaAcademicaBcodeRepository.save(dtoToEntity(cargaT));

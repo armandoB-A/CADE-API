@@ -1,5 +1,6 @@
 package com.bcode.cade.repository;
 
+import com.bcode.cade.dto.horarioinfo.AlumnosByMaterias;
 import com.bcode.cade.entities.CargaAcademicaBcode;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -9,14 +10,21 @@ import javax.persistence.Tuple;
 import java.util.List;
 
 public interface CargaAcademicaBcodeRepository extends JpaRepository<CargaAcademicaBcode, Long> {
-    @Query("select (count(c) > 0) from CargaAcademicaBcode c where c.numeroControlFk.id = ?1")
-    boolean existsByNumeroControlFk_Id(String id);
+
+    boolean existsByNumeroControlFk_IdAndNumeroControlFk_StatusAlumno(String id, Character statusAlumno);
 
     @Query("select h.numeroControlFk.nombreAlumno from CargaAcademicaBcode h " +
             "where h.idHorarioFk.idAdministrativoFk.id = ?1 " +
             "and h.idHorarioFk.claveMateriaFk.id = ?2 " +
             "and h.idHorarioFk.idGrupoFk.numeroGrupo = ?3")
     List<String> findAlumnosByGrupo(Integer idAdmin, String claveMateria, String grupo);
+
+    @Query("select c from CargaAcademicaBcode c " +
+            "where c.idHorarioFk.idAdministrativoFk.id = ?1 and c.idHorarioFk.claveMateriaFk.id = ?2 and c.idHorarioFk.idGrupoFk.numeroGrupo = ?3 " +
+            "order by c.numeroControlFk.nombreAlumno")
+    List<AlumnosByMaterias> findByIdHorarioFk_IdAdministrativoFk_IdAndIdHorarioFk_ClaveMateriaFk_IdAndIdHorarioFk_IdGrupoFk_NumeroGrupoOrderByNumeroControlFk_NombreAlumnoAsc(Integer id, String id1, String numeroGrupo);
+    
+    
     /*@Query("select " +
             "c.idHorarioFk.claveCarreraFk.descripcionCarrera as carrera," +
             "c.semestreLlevado as semestre," +

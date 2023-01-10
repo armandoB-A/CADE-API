@@ -15,4 +15,6 @@ public interface AdministrativoBcodeRepository extends JpaRepository<Administrat
     @Query("select a from AdministrativoBcode a inner join a.carreraBcodes carreraBcodes " +
             "where carreraBcodes.descripcionCarrera = ?1")
     List<AdministrativoBcode> findByCarreraBcodes_DescripcionCarrera(String descripcionCarrera);
+
+
 }

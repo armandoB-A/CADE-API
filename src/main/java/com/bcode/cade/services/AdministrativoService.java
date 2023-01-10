@@ -1,10 +1,13 @@
 package com.bcode.cade.services;
 
 import com.bcode.cade.dto.AdministrativoAuth;
-import com.bcode.cade.dto.CalificacionSaveBcodeDto;
-import com.bcode.cade.dto.CalificacionSaveBcodeDtoV1;
+import com.bcode.cade.dto.CalificacionAlumnosBcodeDto;
+import com.bcode.cade.dto.CarreraBcodeDto;
+import com.bcode.cade.dto.horarioinfo.AlumnosByMaterias;
+import com.bcode.cade.dto.horarioinfo.GruposAdministrativo;
 import com.bcode.cade.entities.AdministrativoBcode;
 import com.bcode.cade.entities.CalificacionBcode;
+import com.bcode.cade.entities.CarreraBcode;
 import com.bcode.cade.entities.HorarioBcode;
 import com.bcode.cade.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -66,6 +70,9 @@ public class AdministrativoService {
             return ad;
         }
     }
+    public List<GruposAdministrativo> getMateriasByIdAdmin(Integer id_admin) {
+        return horarioBcodeRepository.MateriasByIdAdmin(id_admin);
+    }
 
     public List<String> getAdministrativoGrupos(Integer id_admin, String clave) {
         return horarioBcodeRepository.findByGrupoByMateriaFk_Id(id_admin, clave);
@@ -79,50 +86,35 @@ public class AdministrativoService {
             return ad;
         }
     }
-
-    public CalificacionBcode registrarCalificacion(CalificacionSaveBcodeDtoV1 calificacion) {
-        return calificacionBcodeRepository.save(dtoToEntity(calificacion));
-        /*CalificacionBcode calificacionBcode = new CalificacionBcode();
-        CalificacionBcode calificacionBcodeOR = new CalificacionBcode();
-        calificacionBcodeOR = getCalificacion(calificacionBcodeRepository.saveAndFlush(dtoToEntity(calificacionSaveBcodeDto, calificacionBcode)));
-        return*/
-    }
-
-    private CalificacionBcode dtoToEntity(CalificacionSaveBcodeDtoV1 calificacion) {
-        CalificacionBcode calificacionBcode = new CalificacionBcode();
-        calificacionBcode.setIdCargaAcademicaFk(cargaAcademicaBcodeRepository.findById(calificacion.getIdCargaAcademicaFkId()).get());
-        calificacionBcode.setCalificacion(calificacion.getCalificacion());
-        calificacionBcode.setNivelDesempenio(calificacion.getNivelDesempenio());
-        calificacionBcode.setStatusCalificacion('1');
-        return calificacionBcode;
-    }
-
-    /*private CalificacionBcode dtoToEntity(CalificacionSaveBcodeDto calificacionSaveBcodeDto, CalificacionBcode calificacionBcode) {
-        calificacionBcode.setId(calificacionSaveBcodeDto.getId());
-        return getCalificacionBcode(calificacionSaveBcodeDto, calificacionBcode);
-    }*/
-
-    /*private CalificacionBcode getCalificacionBcode(CalificacionSaveBcodeDto calificacionSaveBcodeDto, CalificacionBcode calificacionBcode) {
-        try {
-            if (calificacionSaveBcodeDto.getIdCargaAcademicaFk() == null) {
-                calificacionBcode.setIdCargaAcademicaFk(cargaAcademicaBcodeRepository.findById(calificacionSaveBcodeDto.getIdCargaAcademicaFk()).get());
-            }
-        }catch(Exception ex){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error en el id de la carga academica, no existe o esta mal escrita", ex);
+    public List<AlumnosByMaterias> getLisAlum(Integer idAdmin, String claveMateria, String grupo) {
+        List<AlumnosByMaterias> ad = cargaAcademicaBcodeRepository.findByIdHorarioFk_IdAdministrativoFk_IdAndIdHorarioFk_ClaveMateriaFk_IdAndIdHorarioFk_IdGrupoFk_NumeroGrupoOrderByNumeroControlFk_NombreAlumnoAsc(idAdmin, claveMateria, grupo);
+        if (ad == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No se Encontrarion Alumnos ");
+        }else{
+            return ad;
         }
+    }
 
-        if(calificacionSaveBcodeDto.getCalificacion() != null)
-            calificacionBcode.setCalificacion(calificacionSaveBcodeDto.getCalificacion());
+    public List<CalificacionBcode> calificacion(List<CalificacionAlumnosBcodeDto> calificaciones) {
+        List<CalificacionBcode> cs= new ArrayList<>();
+        cs=obtenerClaif(calificaciones);
+        cs.forEach(s->{
+            System.out.println(s.getId()+"#"+s.getCalificacion());
+        });
+        return calificacionBcodeRepository.saveAll(cs);
+    }
 
-        if(calificacionSaveBcodeDto.getNivelDesempenio() != null)
-            calificacionBcode.setNivelDesempenio(calificacionSaveBcodeDto.getNivelDesempenio());
+    public List<CalificacionBcode> obtenerClaif(List<CalificacionAlumnosBcodeDto> calif){
+        List<CalificacionBcode> califObjFinal = new ArrayList<>();
 
-        calificacionBcode.setStatusCalificacion('1');
-        return calificacionBcode;
-    }*/
-
-    /*private CalificacionBcode getCalificacion(CalificacionBcode calificacionBcode) {
-        return calificacionBcodeRepository.findByAll(calificacionBcode.getCalificacion(),
-                calificacionBcode.getNivelDesempenio())
-    }*/
+        calif.forEach(ob->{
+            CalificacionBcode c = new CalificacionBcode();
+            c.setIdCargaAcademicaFk(cargaAcademicaBcodeRepository.findById(ob.getIdCargaAcademicaFkId()).get());
+            c.setCalificacion(ob.getCalificacion());
+            c.setNivelDesempenio(ob.getNivelDesempenio());
+            c.setStatusCalificacion(ob.getStatusCalificacion());
+            califObjFinal.add(c);
+        });
+        return califObjFinal;
+    }
 }
