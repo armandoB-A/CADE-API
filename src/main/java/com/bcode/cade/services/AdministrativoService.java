@@ -1,6 +1,7 @@
 package com.bcode.cade.services;
 
 import com.bcode.cade.dto.AdministrativoAuth;
+import com.bcode.cade.dto.AdministrativoSaveBcodeDto;
 import com.bcode.cade.dto.CalificacionAlumnosBcodeDto;
 import com.bcode.cade.dto.CarreraBcodeDto;
 import com.bcode.cade.dto.horarioinfo.AlumnosByMaterias;
@@ -30,6 +31,10 @@ public class AdministrativoService {
     private CargaAcademicaBcodeRepository cargaAcademicaBcodeRepository;
     @Autowired
     private CalificacionBcodeRepository calificacionBcodeRepository;
+    @Autowired
+    private RolBcodeRepository rolBcodeRepository;
+    @Autowired
+    private CarreraBcodeRepository carreraBcodeRepository;
 
     /*
     public AdministrativoBcode getAdministrativoBcodeRepository() {
@@ -70,6 +75,7 @@ public class AdministrativoService {
             return ad;
         }
     }
+
     public List<GruposAdministrativo> getMateriasByIdAdmin(Integer id_admin) {
         return horarioBcodeRepository.MateriasByIdAdmin(id_admin);
     }
@@ -80,34 +86,35 @@ public class AdministrativoService {
 
     public List<String> getAdministrativoAlumnoGrupo(Integer idAdmin, String claveMateria, String grupo) {
         List<String> ad = cargaAcademicaBcodeRepository.findAlumnosByGrupo(idAdmin, claveMateria, grupo);
-        if (ad == null){
+        if (ad == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No se Encontrarion Alumnos ");
-        }else{
+        } else {
             return ad;
         }
     }
+
     public List<AlumnosByMaterias> getLisAlum(Integer idAdmin, String claveMateria, String grupo) {
         List<AlumnosByMaterias> ad = cargaAcademicaBcodeRepository.findByIdHorarioFk_IdAdministrativoFk_IdAndIdHorarioFk_ClaveMateriaFk_IdAndIdHorarioFk_IdGrupoFk_NumeroGrupoOrderByNumeroControlFk_NombreAlumnoAsc(idAdmin, claveMateria, grupo);
-        if (ad == null){
+        if (ad == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No se Encontrarion Alumnos ");
-        }else{
+        } else {
             return ad;
         }
     }
 
     public List<CalificacionBcode> calificacion(List<CalificacionAlumnosBcodeDto> calificaciones) {
-        List<CalificacionBcode> cs= new ArrayList<>();
-        cs=obtenerClaif(calificaciones);
-        cs.forEach(s->{
-            System.out.println(s.getId()+"#"+s.getCalificacion());
+        List<CalificacionBcode> cs = new ArrayList<>();
+        cs = obtenerClaif(calificaciones);
+        cs.forEach(s -> {
+            System.out.println(s.getId() + "#" + s.getCalificacion());
         });
         return calificacionBcodeRepository.saveAll(cs);
     }
 
-    public List<CalificacionBcode> obtenerClaif(List<CalificacionAlumnosBcodeDto> calif){
+    public List<CalificacionBcode> obtenerClaif(List<CalificacionAlumnosBcodeDto> calif) {
         List<CalificacionBcode> califObjFinal = new ArrayList<>();
 
-        calif.forEach(ob->{
+        calif.forEach(ob -> {
             CalificacionBcode c = new CalificacionBcode();
             c.setIdCargaAcademicaFk(cargaAcademicaBcodeRepository.findById(ob.getIdCargaAcademicaFkId()).get());
             c.setCalificacion(ob.getCalificacion());
@@ -117,4 +124,86 @@ public class AdministrativoService {
         });
         return califObjFinal;
     }
+
+    public AdministrativoSaveBcodeDto actualizarDocente(AdministrativoSaveBcodeDto administrativoSaveBcodeDto, Integer id) {
+        AdministrativoBcode administrativoBcode = null;
+        if (!adminExist(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No se encontro Docente");
+        }
+        administrativoBcode = administrativoBcodeRepository.findById(id).get();
+        try {
+            AdministrativoBcode docente = dtoToEntity(administrativoSaveBcodeDto, administrativoBcode, id);
+            AdministrativoBcode docenteBcode1 = administrativoBcodeRepository.saveAndFlush(docente);
+            return entityToDto(docenteBcode1);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error saving");
+        }
+    }
+
+    public boolean adminExist(Integer id) {
+        if (administrativoBcodeRepository.existsById(id)) {
+            return true;
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Administrativo No Encontrado");
+        }
+    }
+
+    private AdministrativoBcode dtoToEntity(AdministrativoSaveBcodeDto administrativoSaveBcodeDto, AdministrativoBcode administrativoBcode, Integer id){
+        administrativoBcode.setId(id);
+        return getAdministrativoBcode(administrativoSaveBcodeDto, administrativoBcode);
+    }
+
+    private AdministrativoBcode getAdministrativoBcode(AdministrativoSaveBcodeDto administrativoSaveBcodeDto, AdministrativoBcode administrativoBcode){
+        if(administrativoSaveBcodeDto.getNombreAdministrativo() != null)
+            administrativoBcode.setNombreAdministrativo(administrativoSaveBcodeDto.getNombreAdministrativo());
+
+        if(administrativoSaveBcodeDto.getApe1Administrativo() != null)
+            administrativoBcode.setApe1Administrativo(administrativoSaveBcodeDto.getApe1Administrativo());
+
+        if(administrativoSaveBcodeDto.getApe2Administrativo() != null)
+            administrativoBcode.setApe2Administrativo(administrativoSaveBcodeDto.getApe2Administrativo());
+
+        if(administrativoSaveBcodeDto.getTelefonoAdministrativo() != null)
+            administrativoBcode.setTelefonoAdministrativo(administrativoSaveBcodeDto.getTelefonoAdministrativo());
+
+        if(administrativoSaveBcodeDto.getCorreoAdministrativo() != null)
+            administrativoBcode.setCorreoAdministrativo(administrativoSaveBcodeDto.getCorreoAdministrativo());
+
+        if(administrativoSaveBcodeDto.getDireccionAdministrativo() != null)
+            administrativoBcode.setDireccionAdministrativo(administrativoSaveBcodeDto.getDireccionAdministrativo());
+
+        if(administrativoSaveBcodeDto.getContraseniaAdministrativo() != null)
+            administrativoBcode.setContraseniaAdministrativo(administrativoSaveBcodeDto.getContraseniaAdministrativo());
+
+        if(administrativoSaveBcodeDto.getStatusAdministrativo() != null)
+            administrativoBcode.setStatusAdministrativo(administrativoSaveBcodeDto.getStatusAdministrativo());
+
+        try{
+            if(administrativoBcode.getIdRolFkId() == null)
+                administrativoBcode.setIdRolFk(rolBcodeRepository.findById((byte) 2).get());
+            //if(administrativoSaveBcodeDto.getCarreraBcodeIds() != null)
+              //  administrativoBcode.setCarreraBcodes(carreraBcodeRepository.findById(administrativoSaveBcodeDto.getCarreraBcodeIds()).get());
+
+        }catch(Exception ex){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Hay un error", ex);
+        }
+
+        return administrativoBcode;
+    }
+
+    private AdministrativoSaveBcodeDto entityToDto(AdministrativoBcode docente){
+        return new AdministrativoSaveBcodeDto(
+                docente.getId(),
+                docente.getNombreAdministrativo(),
+                docente.getApe1Administrativo(),
+                docente.getApe2Administrativo(),
+                docente.getTelefonoAdministrativo(),
+                docente.getCorreoAdministrativo(),
+                docente.getDireccionAdministrativo(),
+                docente.getStatusAdministrativo(),
+                docente.getContraseniaAdministrativo(),
+                docente.getIdRolFkId().getId()
+        );
+    }
+
 }

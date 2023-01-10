@@ -143,4 +143,7 @@ public class AdministrativoBcode {
         this.idRolFk = idRolFk;
     }
 
+    public RolBcode getIdRolFkId() {
+        return idRolFk;
+    }
 }

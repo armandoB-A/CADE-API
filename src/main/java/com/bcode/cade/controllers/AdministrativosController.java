@@ -1,6 +1,7 @@
 package com.bcode.cade.controllers;
 
 import com.bcode.cade.dto.AdministrativoAuth;
+import com.bcode.cade.dto.AdministrativoSaveBcodeDto;
 import com.bcode.cade.dto.AlumnoSaveBcodeDto;
 import com.bcode.cade.dto.CalificacionAlumnosBcodeDto;
 import com.bcode.cade.dto.horarioinfo.AlumnosByMaterias;
@@ -84,6 +85,13 @@ public class AdministrativosController {
     public ResponseEntity<AdministrativoBcode> authAdmin2(@RequestParam(value = "nombre") String nom,
                                                           @RequestParam(value = "contra") String contra) {
         return new ResponseEntity<>(administrativoService.authuAdmin(nom, contra), HttpStatus.OK);
+    }
+
+    @PutMapping("/actualizar")
+    public ResponseEntity<AdministrativoSaveBcodeDto> updateDocente(
+            @RequestBody AdministrativoSaveBcodeDto administrativoSaveBcodeDto,
+            @RequestParam(value = "id") Integer id){
+        return new ResponseEntity<>(administrativoService.actualizarDocente(administrativoSaveBcodeDto, id), HttpStatus.ACCEPTED);
     }
 
     /*
