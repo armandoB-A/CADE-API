@@ -178,16 +178,6 @@ public class AdministrativoService {
         if(administrativoSaveBcodeDto.getStatusAdministrativo() != null)
             administrativoBcode.setStatusAdministrativo(administrativoSaveBcodeDto.getStatusAdministrativo());
 
-        try{
-            if(administrativoBcode.getIdRolFkId() == null)
-                administrativoBcode.setIdRolFk(rolBcodeRepository.findById((byte) 2).get());
-            //if(administrativoSaveBcodeDto.getCarreraBcodeIds() != null)
-              //  administrativoBcode.setCarreraBcodes(carreraBcodeRepository.findById(administrativoSaveBcodeDto.getCarreraBcodeIds()).get());
-
-        }catch(Exception ex){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Hay un error", ex);
-        }
-
         return administrativoBcode;
     }
 
