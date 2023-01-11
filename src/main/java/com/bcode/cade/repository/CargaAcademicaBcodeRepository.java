@@ -1,12 +1,11 @@
 package com.bcode.cade.repository;
 
 import com.bcode.cade.dto.horarioinfo.AlumnosByMaterias;
+import com.bcode.cade.dto.horarioinfo.CargaAcademicaBcodeInfo;
 import com.bcode.cade.entities.CargaAcademicaBcode;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
-import javax.persistence.Tuple;
 import java.util.List;
 
 public interface CargaAcademicaBcodeRepository extends JpaRepository<CargaAcademicaBcode, Long> {
@@ -23,6 +22,11 @@ public interface CargaAcademicaBcodeRepository extends JpaRepository<CargaAcadem
             "where c.idHorarioFk.idAdministrativoFk.id = ?1 and c.idHorarioFk.claveMateriaFk.id = ?2 and c.idHorarioFk.idGrupoFk.numeroGrupo = ?3 " +
             "order by c.numeroControlFk.nombreAlumno")
     List<AlumnosByMaterias> findByIdHorarioFk_IdAdministrativoFk_IdAndIdHorarioFk_ClaveMateriaFk_IdAndIdHorarioFk_IdGrupoFk_NumeroGrupoOrderByNumeroControlFk_NombreAlumnoAsc(Integer id, String id1, String numeroGrupo);
+
+    @Query("select c from CargaAcademicaBcode c " +
+            "where c.idHorarioFk.idGrupoFk.numeroGrupo = ?1 " +
+            "order by c.numeroControlFk.ape1Alumno")
+    List<CargaAcademicaBcodeInfo> findByIdHorarioFk_IdGrupoFk_NumeroGrupoOrderByNumeroControlFk_Ape1AlumnoAsc(String numeroGrupo);
     
     
     /*@Query("select " +

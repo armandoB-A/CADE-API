@@ -12,6 +12,8 @@ import java.util.List;
 
 @Repository
 public interface HorarioBcodeRepository extends JpaRepository<HorarioBcode, Long> {
+    @Query("select distinct h from HorarioBcode h where h.claveCarreraFk.id = ?1 order by h.idGrupoFk.numeroGrupo")
+    List<GruposInfo> findDistinctByClaveCarreraFk_IdOrderByIdGrupoFk_NumeroGrupoAsc(String id);
     @Query("select h from HorarioBcode h inner join h.idAdministrativoFk.carreraBcodes carreraBcodes " +
             "where carreraBcodes.id = ?1 " +
             "order by h.idGrupoFk.numeroGrupo")
