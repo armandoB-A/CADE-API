@@ -4,6 +4,7 @@ import com.bcode.cade.dto.horarioinfo.CargaAcademicaSemestreBcodeInfo;
 import com.bcode.cade.dto.horarioinfo.AlumnosByMaterias;
 import com.bcode.cade.dto.horarioinfo.CargaAcademicaBcodeInfo;
 
+import com.bcode.cade.dto.horarioinfo.SemestreInfo;
 import com.bcode.cade.entities.CargaAcademicaBcode;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -11,10 +12,18 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface CargaAcademicaBcodeRepository extends JpaRepository<CargaAcademicaBcode, Long> {
+    @Query("select distinct c from CargaAcademicaBcode c where c.numeroControlFk.id = ?1 order by c.semestreLlevado")
+    List<SemestreInfo> findDistinctByNumeroControlFk_IdOrderBySemestreLlevadoAsc(String id);
+
     @Query("select c from CargaAcademicaBcode c " +
             "where c.numeroControlFk.id = ?1 and c.semestreLlevado = ?2 " +
             "order by c.idHorarioFk.claveMateriaFk.nombreMateria")
     List<CargaAcademicaSemestreBcodeInfo> findByNumeroControlFk_IdAndSemestreLlevadoOrderByIdHorarioFk_ClaveMateriaFk_NombreMateriaAsc(String id, String semestreLlevado);
+
+    @Query("select c from CargaAcademicaBcode c " +
+            "where c.numeroControlFk.id = ?1 and c.semestreLlevado = ?2 " +
+            "order by c.idHorarioFk.claveMateriaFk.nombreMateria")
+    List<CargaAcademicaBcode> findByNumeroControlFk_IdAndSemestreLlevadoOrderByIdHorarioFk_ClaveMateriaFk_NombreMateriaAsc11(String id, String semestreLlevado);
 
     boolean existsByNumeroControlFk_IdAndNumeroControlFk_StatusAlumno(String id, Character statusAlumno);
 
