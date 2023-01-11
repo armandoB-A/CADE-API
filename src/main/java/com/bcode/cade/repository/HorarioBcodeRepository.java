@@ -1,6 +1,7 @@
 package com.bcode.cade.repository;
 
 import com.bcode.cade.dto.horarioinfo.GruposAdministrativo;
+import com.bcode.cade.dto.horarioinfo.GruposInfo;
 import com.bcode.cade.dto.horarioinfo.HorarioBcodeInfo;
 import com.bcode.cade.entities.HorarioBcode;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,6 +12,10 @@ import java.util.List;
 
 @Repository
 public interface HorarioBcodeRepository extends JpaRepository<HorarioBcode, Long> {
+    @Query("select h from HorarioBcode h inner join h.idAdministrativoFk.carreraBcodes carreraBcodes " +
+            "where carreraBcodes.id = ?1 " +
+            "order by h.idGrupoFk.numeroGrupo")
+    List<GruposInfo> findByIdAdministrativoFk_CarreraBcodes_IdOrderByIdGrupoFk_NumeroGrupoAsc(String id);
     @Query("select h from HorarioBcode h where h.claveMateriaFk.id = ?1")
     HorarioBcode findByClaveMateriaFk_Id(String id);
     @Query("select h from HorarioBcode h where h.claveCarreraFk.id = ?1 order by h.periodoSemestre")
