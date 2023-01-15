@@ -211,4 +211,8 @@ public class AdministrativoService {
         administrativoBcode.setIdRolFk(rolBcodeRepository.findById(administrativoSaveBcodeDto.getIdRolFkId()).get());
         return administrativoBcode;
     }
+
+    public List<AdministrativoBcode> getDocentesv() {
+        return administrativoBcodeRepository.findByIdRolFk_IdAndCarreraBcodesEmpty((byte) 2);
+    }
 }

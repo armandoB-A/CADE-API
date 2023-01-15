@@ -16,5 +16,8 @@ public interface AdministrativoBcodeRepository extends JpaRepository<Administrat
             "where carreraBcodes.descripcionCarrera = ?1")
     List<AdministrativoBcode> findByCarreraBcodes_DescripcionCarrera(String descripcionCarrera);
 
+    @Query("select a from AdministrativoBcode a where a.idRolFk.id = ?1 and a.carreraBcodes is empty")
+    List<AdministrativoBcode> findByIdRolFk_IdAndCarreraBcodesEmpty(Byte id);
+
 
 }

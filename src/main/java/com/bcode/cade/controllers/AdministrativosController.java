@@ -98,6 +98,12 @@ public class AdministrativosController {
     public ResponseEntity<AdministrativoBcode> saveAdministrativo (@RequestBody AdministrativoSaveBcodeDto administrativoSaveBcodeDto){
         return new ResponseEntity<>(administrativoService.registrarAlumno(administrativoSaveBcodeDto), HttpStatus.CREATED);
     }
+
+    @GetMapping("/docentes-vacios")
+    public ResponseEntity<List<AdministrativoBcode>> getDocentesv() {
+        return new ResponseEntity<>(administrativoService.getDocentesv(), HttpStatus.OK);
+    }
+
     /*
     @PostMapping("/registro")
     public ResponseEntity<AlumnoBcode> saveAlumno (@RequestBody AlumnoSaveBcodeDto alumnoSaveBcodeDto){
