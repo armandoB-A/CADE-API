@@ -3,9 +3,7 @@ package com.bcode.cade.services;
 import com.bcode.cade.dto.*;
 import com.bcode.cade.dto.horarioinfo.AlumnosByMaterias;
 import com.bcode.cade.dto.horarioinfo.GruposAdministrativo;
-import com.bcode.cade.entities.AdministrativoBcode;
-import com.bcode.cade.entities.CalificacionBcode;
-import com.bcode.cade.entities.DetalleAdministrativoBcode;
+import com.bcode.cade.entities.*;
 import com.bcode.cade.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,6 +31,11 @@ public class AdministrativoService {
     private RolBcodeRepository rolBcodeRepository;
     @Autowired
     private CarreraBcodeRepository carreraBcodeRepository;
+    @Autowired
+    private MateriaBcodeRepository materiaBcodeRepository;
+
+    @Autowired
+    private GrupoBcodeRepository grupoBcodeRepository;
 
     /*
     public AdministrativoBcode getAdministrativoBcodeRepository() {
@@ -231,5 +234,23 @@ public class AdministrativoService {
         });
 
         return detalleAdministrativoBcodeRepository.saveAll(detalleAdministrativoBcode);
+    }
+
+    public List<HorarioBcode> registroMateriasCarrera(int id, List<MateriasDocenteBcodeDto> materias) {
+        List<HorarioBcode> materiasReal = new ArrayList<>();
+
+        materias.forEach(i -> {
+            if (!horarioBcodeRepository.existsByClaveMateriaFk_Id(i.getClaveMateriaFkId())){
+                HorarioBcode horarioBcode = new HorarioBcode();
+                horarioBcode.setClaveCarreraFk(carreraBcodeRepository.findById(i.getClaveCarreraFkId()).get());
+                horarioBcode.setClaveMateriaFk(materiaBcodeRepository.findById(i.getClaveMateriaFkId()).get());
+                horarioBcode.setIdAdministrativoFk(administrativoBcodeRepository.findById(id).get());
+                horarioBcode.setIdGrupoFk(grupoBcodeRepository.findById(i.getIdGrupoFkId()).get());
+                horarioBcode.setPeriodoSemestre(i.getPeriodoSemestre());
+                materiasReal.add(horarioBcode);
+            }
+        });
+
+        return horarioBcodeRepository.saveAll(materiasReal);
     }
 }

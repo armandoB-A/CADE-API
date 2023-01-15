@@ -6,6 +6,7 @@ import javax.persistence.*;
 @Table(name = "HORARIO_BCODE")
 public class HorarioBcode {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_horario", nullable = false)
     private Long id;
 

@@ -4,14 +4,12 @@ import com.bcode.cade.dto.*;
 import com.bcode.cade.dto.horarioinfo.AlumnosByMaterias;
 import com.bcode.cade.dto.horarioinfo.GruposAdministrativo;
 import com.bcode.cade.entities.*;
-import com.bcode.cade.repository.HorarioBcodeInfo;
 import com.bcode.cade.services.AdministrativoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.PathParam;
 import java.util.List;
 
 @CrossOrigin
@@ -105,6 +103,13 @@ public class AdministrativosController {
             @PathVariable(value = "idd") int idd,
             @RequestBody List<CarreraBcodeDto1> carrera) {
         return new ResponseEntity<>(administrativoService.registroDocenteCarrera(idd,carrera), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/registro-materiasd/{idd}/")
+    public ResponseEntity<List<HorarioBcode>> saveMateriasDocente(
+            @PathVariable(value = "idd") int idd,
+            @RequestBody List<MateriasDocenteBcodeDto> materias) {
+        return new ResponseEntity<>(administrativoService.registroMateriasCarrera(idd,materias), HttpStatus.CREATED);
     }
     /*
     @PostMapping("/registro")
