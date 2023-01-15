@@ -5,17 +5,18 @@ import com.bcode.cade.dto.horarioinfo.AlumnosByMaterias;
 import com.bcode.cade.dto.horarioinfo.GruposAdministrativo;
 import com.bcode.cade.entities.AdministrativoBcode;
 import com.bcode.cade.entities.CalificacionBcode;
-import com.bcode.cade.entities.CarreraBcode;
-import com.bcode.cade.entities.HorarioBcode;
+import com.bcode.cade.entities.DetalleAdministrativoBcode;
 import com.bcode.cade.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@RestController
 @Service
 public class AdministrativoService {
     @Autowired
@@ -145,40 +146,40 @@ public class AdministrativoService {
         }
     }
 
-    private AdministrativoBcode dtoToEntity(AdministrativoSaveBcodeDto administrativoSaveBcodeDto, AdministrativoBcode administrativoBcode, Integer id){
+    private AdministrativoBcode dtoToEntity(AdministrativoSaveBcodeDto administrativoSaveBcodeDto, AdministrativoBcode administrativoBcode, Integer id) {
         administrativoBcode.setId(id);
         return getAdministrativoBcode(administrativoSaveBcodeDto, administrativoBcode);
     }
 
-    private AdministrativoBcode getAdministrativoBcode(AdministrativoSaveBcodeDto administrativoSaveBcodeDto, AdministrativoBcode administrativoBcode){
-        if(administrativoSaveBcodeDto.getNombreAdministrativo() != null)
+    private AdministrativoBcode getAdministrativoBcode(AdministrativoSaveBcodeDto administrativoSaveBcodeDto, AdministrativoBcode administrativoBcode) {
+        if (administrativoSaveBcodeDto.getNombreAdministrativo() != null)
             administrativoBcode.setNombreAdministrativo(administrativoSaveBcodeDto.getNombreAdministrativo());
 
-        if(administrativoSaveBcodeDto.getApe1Administrativo() != null)
+        if (administrativoSaveBcodeDto.getApe1Administrativo() != null)
             administrativoBcode.setApe1Administrativo(administrativoSaveBcodeDto.getApe1Administrativo());
 
-        if(administrativoSaveBcodeDto.getApe2Administrativo() != null)
+        if (administrativoSaveBcodeDto.getApe2Administrativo() != null)
             administrativoBcode.setApe2Administrativo(administrativoSaveBcodeDto.getApe2Administrativo());
 
-        if(administrativoSaveBcodeDto.getTelefonoAdministrativo() != null)
+        if (administrativoSaveBcodeDto.getTelefonoAdministrativo() != null)
             administrativoBcode.setTelefonoAdministrativo(administrativoSaveBcodeDto.getTelefonoAdministrativo());
 
-        if(administrativoSaveBcodeDto.getCorreoAdministrativo() != null)
+        if (administrativoSaveBcodeDto.getCorreoAdministrativo() != null)
             administrativoBcode.setCorreoAdministrativo(administrativoSaveBcodeDto.getCorreoAdministrativo());
 
-        if(administrativoSaveBcodeDto.getDireccionAdministrativo() != null)
+        if (administrativoSaveBcodeDto.getDireccionAdministrativo() != null)
             administrativoBcode.setDireccionAdministrativo(administrativoSaveBcodeDto.getDireccionAdministrativo());
 
-        if(administrativoSaveBcodeDto.getContraseniaAdministrativo() != null)
+        if (administrativoSaveBcodeDto.getContraseniaAdministrativo() != null)
             administrativoBcode.setContraseniaAdministrativo(administrativoSaveBcodeDto.getContraseniaAdministrativo());
 
-        if(administrativoSaveBcodeDto.getStatusAdministrativo() != null)
+        if (administrativoSaveBcodeDto.getStatusAdministrativo() != null)
             administrativoBcode.setStatusAdministrativo(administrativoSaveBcodeDto.getStatusAdministrativo());
 
         return administrativoBcode;
     }
 
-    private AdministrativoSaveBcodeDto entityToDto(AdministrativoBcode docente){
+    private AdministrativoSaveBcodeDto entityToDto(AdministrativoBcode docente) {
         return new AdministrativoSaveBcodeDto(
                 docente.getId(),
                 docente.getNombreAdministrativo(),
@@ -198,7 +199,8 @@ public class AdministrativoService {
         AdministrativoBcode adm = administrativoBcodeRepository.saveAndFlush(administrativo);
         return adm;
     }
-    private AdministrativoBcode dtoToEntity(AdministrativoSaveBcodeDto administrativoSaveBcodeDto){
+
+    private AdministrativoBcode dtoToEntity(AdministrativoSaveBcodeDto administrativoSaveBcodeDto) {
         AdministrativoBcode administrativoBcode = new AdministrativoBcode();
         administrativoBcode.setNombreAdministrativo(administrativoSaveBcodeDto.getNombreAdministrativo());
         administrativoBcode.setApe1Administrativo(administrativoSaveBcodeDto.getApe1Administrativo());
@@ -214,5 +216,20 @@ public class AdministrativoService {
 
     public List<AdministrativoBcode> getDocentesv() {
         return administrativoBcodeRepository.findByIdRolFk_IdAndCarreraBcodesEmpty((byte) 2);
+    }
+
+    public List<DetalleAdministrativoBcode> registroDocenteCarrera(int id, List<CarreraBcodeDto1> carrera) {
+        List<DetalleAdministrativoBcode> detalleAdministrativoBcode = new ArrayList<>();
+
+        carrera.forEach(i -> {
+            if (!detalleAdministrativoBcodeRepository.existsByIdAdministrativoFk_IdAndClaveCarreraFk_Id(id, i.getId())){
+                DetalleAdministrativoBcode detalleAdmin = new DetalleAdministrativoBcode();
+                detalleAdmin.setIdAdministrativoFk(administrativoBcodeRepository.findById(id).get());
+                detalleAdmin.setClaveCarreraFk(carreraBcodeRepository.findById(i.getId()).get());
+                detalleAdministrativoBcode.add(detalleAdmin);
+            }
+        });
+
+        return detalleAdministrativoBcodeRepository.saveAll(detalleAdministrativoBcode);
     }
 }

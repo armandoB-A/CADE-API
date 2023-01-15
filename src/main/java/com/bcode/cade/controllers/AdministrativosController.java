@@ -1,15 +1,9 @@
 package com.bcode.cade.controllers;
 
-import com.bcode.cade.dto.AdministrativoAuth;
-import com.bcode.cade.dto.AdministrativoSaveBcodeDto;
-import com.bcode.cade.dto.AlumnoSaveBcodeDto;
-import com.bcode.cade.dto.CalificacionAlumnosBcodeDto;
+import com.bcode.cade.dto.*;
 import com.bcode.cade.dto.horarioinfo.AlumnosByMaterias;
 import com.bcode.cade.dto.horarioinfo.GruposAdministrativo;
-import com.bcode.cade.entities.AdministrativoBcode;
-import com.bcode.cade.entities.AlumnoBcode;
-import com.bcode.cade.entities.CalificacionBcode;
-import com.bcode.cade.entities.HorarioBcode;
+import com.bcode.cade.entities.*;
 import com.bcode.cade.repository.HorarioBcodeInfo;
 import com.bcode.cade.services.AdministrativoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,26 +37,27 @@ public class AdministrativosController {
     }
 
     @GetMapping("/id/{id_admin}/{materia}/grupos")
-    public ResponseEntity<List<String>> getGrupos(@PathVariable(value="id_admin") Integer id_admin,
-            @PathVariable(value="materia")String clave){
+    public ResponseEntity<List<String>> getGrupos(@PathVariable(value = "id_admin") Integer id_admin,
+                                                  @PathVariable(value = "materia") String clave) {
         return new ResponseEntity<>(administrativoService.getAdministrativoGrupos(id_admin, clave), HttpStatus.OK);
     }
+
     @GetMapping("materias/id/{id_admin}")
-    public ResponseEntity<List<GruposAdministrativo>> getGrupos(@PathVariable(value="id_admin") Integer id_admin){
+    public ResponseEntity<List<GruposAdministrativo>> getGrupos(@PathVariable(value = "id_admin") Integer id_admin) {
         return new ResponseEntity<>(administrativoService.getMateriasByIdAdmin(id_admin), HttpStatus.OK);
     }
 
     @GetMapping("/id/{id_admin}/{materia}/{grupo}/alumnos")
-    public ResponseEntity<List<String>> getAlumnos(@PathVariable(value="id_admin") Integer id_admin,
-                                                   @PathVariable(value="materia") String clave_materia,
-                                                   @PathVariable(value="grupo") String grupo){
+    public ResponseEntity<List<String>> getAlumnos(@PathVariable(value = "id_admin") Integer id_admin,
+                                                   @PathVariable(value = "materia") String clave_materia,
+                                                   @PathVariable(value = "grupo") String grupo) {
         return new ResponseEntity<>(administrativoService.getAdministrativoAlumnoGrupo(id_admin, clave_materia, grupo), HttpStatus.OK);
     }
 
     @GetMapping("/alumnos/{id_admin}/{materia}/{grupo}/")
-    public ResponseEntity<List<AlumnosByMaterias>> getListAlumnos(@PathVariable(value="id_admin") Integer id_admin,
-                                                                  @PathVariable(value="materia") String clave_materia,
-                                                                  @PathVariable(value="grupo") String grupo){
+    public ResponseEntity<List<AlumnosByMaterias>> getListAlumnos(@PathVariable(value = "id_admin") Integer id_admin,
+                                                                  @PathVariable(value = "materia") String clave_materia,
+                                                                  @PathVariable(value = "grupo") String grupo) {
         return new ResponseEntity<>(administrativoService.getLisAlum(id_admin, clave_materia, grupo), HttpStatus.OK);
     }
 
@@ -71,8 +66,9 @@ public class AdministrativosController {
             @PathVariable(value = "carrera") String carrera) {
         return new ResponseEntity<>(administrativoService.getDocenteByCarrera(carrera), HttpStatus.OK);
     }
+
     @PostMapping("registro-calificaciones")
-    public ResponseEntity<List<CalificacionBcode>> saveAlumno (@RequestBody List<CalificacionAlumnosBcodeDto> calificaciones){
+    public ResponseEntity<List<CalificacionBcode>> saveAlumno(@RequestBody List<CalificacionAlumnosBcodeDto> calificaciones) {
         return new ResponseEntity<>(administrativoService.calificacion(calificaciones), HttpStatus.CREATED);
     }
 
@@ -90,12 +86,12 @@ public class AdministrativosController {
     @PutMapping("/actualizar")
     public ResponseEntity<AdministrativoSaveBcodeDto> updateDocente(
             @RequestBody AdministrativoSaveBcodeDto administrativoSaveBcodeDto,
-            @RequestParam(value = "id") Integer id){
+            @RequestParam(value = "id") Integer id) {
         return new ResponseEntity<>(administrativoService.actualizarDocente(administrativoSaveBcodeDto, id), HttpStatus.ACCEPTED);
     }
 
     @PostMapping("/registro")
-    public ResponseEntity<AdministrativoBcode> saveAdministrativo (@RequestBody AdministrativoSaveBcodeDto administrativoSaveBcodeDto){
+    public ResponseEntity<AdministrativoBcode> saveAdministrativo(@RequestBody AdministrativoSaveBcodeDto administrativoSaveBcodeDto) {
         return new ResponseEntity<>(administrativoService.registrarAlumno(administrativoSaveBcodeDto), HttpStatus.CREATED);
     }
 
@@ -104,6 +100,12 @@ public class AdministrativosController {
         return new ResponseEntity<>(administrativoService.getDocentesv(), HttpStatus.OK);
     }
 
+    @PostMapping("/registro-carrerasd/{idd}/")
+    public ResponseEntity<List<DetalleAdministrativoBcode>> saveCarrerasDocente(
+            @PathVariable(value = "idd") int idd,
+            @RequestBody List<CarreraBcodeDto1> carrera) {
+        return new ResponseEntity<>(administrativoService.registroDocenteCarrera(idd,carrera), HttpStatus.CREATED);
+    }
     /*
     @PostMapping("/registro")
     public ResponseEntity<AlumnoBcode> saveAlumno (@RequestBody AlumnoSaveBcodeDto alumnoSaveBcodeDto){

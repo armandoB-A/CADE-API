@@ -6,6 +6,7 @@ import javax.persistence.*;
 @Table(name = "DETALLE_ADMINISTRATIVO_BCODE")
 public class DetalleAdministrativoBcode {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_detalle_adminitrativo", nullable = false)
     private Integer id;
 
