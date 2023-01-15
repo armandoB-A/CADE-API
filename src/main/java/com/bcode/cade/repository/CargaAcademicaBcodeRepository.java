@@ -12,6 +12,8 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface CargaAcademicaBcodeRepository extends JpaRepository<CargaAcademicaBcode, Long> {
+    @Query("select (count(c) > 0) from CargaAcademicaBcode c where c.numeroControlFk.id = ?1 and c.idHorarioFk.id = ?2")
+    boolean existsByNumeroControlFk_IdAndIdHorarioFk_Id(String id, Long id1);
     @Query("select distinct c from CargaAcademicaBcode c where c.numeroControlFk.id = ?1 order by c.semestreLlevado")
     List<SemestreInfo> findDistinctByNumeroControlFk_IdOrderBySemestreLlevadoAsc(String id);
 

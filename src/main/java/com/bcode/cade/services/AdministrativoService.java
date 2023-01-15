@@ -117,10 +117,14 @@ public class AdministrativoService {
 
         calif.forEach(ob -> {
             CalificacionBcode c = new CalificacionBcode();
+            if (calificacionBcodeRepository.existsByIdCargaAcademicaFk_Id(ob.getIdCargaAcademicaFkId())) {
+                c = calificacionBcodeRepository.findByIdCargaAcademicaFk_Id(ob.getIdCargaAcademicaFkId());
+            }
             c.setIdCargaAcademicaFk(cargaAcademicaBcodeRepository.findById(ob.getIdCargaAcademicaFkId()).get());
             c.setCalificacion(ob.getCalificacion());
             c.setNivelDesempenio(ob.getNivelDesempenio());
             c.setStatusCalificacion(ob.getStatusCalificacion());
+
             califObjFinal.add(c);
         });
         return califObjFinal;
@@ -225,7 +229,7 @@ public class AdministrativoService {
         List<DetalleAdministrativoBcode> detalleAdministrativoBcode = new ArrayList<>();
 
         carrera.forEach(i -> {
-            if (!detalleAdministrativoBcodeRepository.existsByIdAdministrativoFk_IdAndClaveCarreraFk_Id(id, i.getId())){
+            if (!detalleAdministrativoBcodeRepository.existsByIdAdministrativoFk_IdAndClaveCarreraFk_Id(id, i.getId())) {
                 DetalleAdministrativoBcode detalleAdmin = new DetalleAdministrativoBcode();
                 detalleAdmin.setIdAdministrativoFk(administrativoBcodeRepository.findById(id).get());
                 detalleAdmin.setClaveCarreraFk(carreraBcodeRepository.findById(i.getId()).get());
@@ -240,7 +244,7 @@ public class AdministrativoService {
         List<HorarioBcode> materiasReal = new ArrayList<>();
 
         materias.forEach(i -> {
-            if (!horarioBcodeRepository.existsByClaveMateriaFk_Id(i.getClaveMateriaFkId())){
+            if (!horarioBcodeRepository.existsByClaveMateriaFk_Id(i.getClaveMateriaFkId())) {
                 HorarioBcode horarioBcode = new HorarioBcode();
                 horarioBcode.setClaveCarreraFk(carreraBcodeRepository.findById(i.getClaveCarreraFkId()).get());
                 horarioBcode.setClaveMateriaFk(materiaBcodeRepository.findById(i.getClaveMateriaFkId()).get());

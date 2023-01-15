@@ -36,7 +36,15 @@ public class CargaAcademicaService {
         return cargaAcademicaBcodeRepository.findByNumeroControlFk_IdAndSemestreLlevadoOrderByIdHorarioFk_ClaveMateriaFk_NombreMateriaAsc(numc, semestre);
     }
     public CargaAcademicaBcode saveCarga(CargaAcademicaBcodeDto1 cargaT) {
-        return cargaAcademicaBcodeRepository.save(dtoToEntity(cargaT));
+        if (!cargaAcademicaBcodeRepository.existsByNumeroControlFk_IdAndIdHorarioFk_Id(
+                cargaT.getNumeroControlFkId(),
+                horarioBcodeRepository.findByClaveMateriaFk_Id(cargaT.getIdHorarioFkClaveMateriaFkId()).getId())
+        ){
+            return cargaAcademicaBcodeRepository.save(dtoToEntity(cargaT));
+        }else {
+            return null;
+        }
+
     }
 
     private CargaAcademicaBcode dtoToEntity(CargaAcademicaBcodeDto1 cargaT) {
