@@ -1,9 +1,6 @@
 package com.bcode.cade.services;
 
-import com.bcode.cade.dto.AdministrativoAuth;
-import com.bcode.cade.dto.AdministrativoSaveBcodeDto;
-import com.bcode.cade.dto.CalificacionAlumnosBcodeDto;
-import com.bcode.cade.dto.CarreraBcodeDto;
+import com.bcode.cade.dto.*;
 import com.bcode.cade.dto.horarioinfo.AlumnosByMaterias;
 import com.bcode.cade.dto.horarioinfo.GruposAdministrativo;
 import com.bcode.cade.entities.AdministrativoBcode;
@@ -196,4 +193,22 @@ public class AdministrativoService {
         );
     }
 
+    public AdministrativoBcode registrarAlumno(AdministrativoSaveBcodeDto administrativoBcode) {
+        AdministrativoBcode administrativo = dtoToEntity(administrativoBcode);
+        AdministrativoBcode adm = administrativoBcodeRepository.saveAndFlush(administrativo);
+        return adm;
+    }
+    private AdministrativoBcode dtoToEntity(AdministrativoSaveBcodeDto administrativoSaveBcodeDto){
+        AdministrativoBcode administrativoBcode = new AdministrativoBcode();
+        administrativoBcode.setNombreAdministrativo(administrativoSaveBcodeDto.getNombreAdministrativo());
+        administrativoBcode.setApe1Administrativo(administrativoSaveBcodeDto.getApe1Administrativo());
+        administrativoBcode.setApe2Administrativo(administrativoSaveBcodeDto.getApe2Administrativo());
+        administrativoBcode.setTelefonoAdministrativo(administrativoSaveBcodeDto.getTelefonoAdministrativo());
+        administrativoBcode.setCorreoAdministrativo(administrativoSaveBcodeDto.getCorreoAdministrativo());
+        administrativoBcode.setDireccionAdministrativo(administrativoSaveBcodeDto.getDireccionAdministrativo());
+        administrativoBcode.setStatusAdministrativo(administrativoSaveBcodeDto.getStatusAdministrativo());
+        administrativoBcode.setContraseniaAdministrativo(administrativoSaveBcodeDto.getContraseniaAdministrativo());
+        administrativoBcode.setIdRolFk(rolBcodeRepository.findById(administrativoSaveBcodeDto.getIdRolFkId()).get());
+        return administrativoBcode;
+    }
 }

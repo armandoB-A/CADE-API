@@ -8,6 +8,7 @@ import java.util.List;
 @Table(name = "administrativo_bcode")
 public class AdministrativoBcode {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_administrativo", nullable = false)
     private Integer id;
 
