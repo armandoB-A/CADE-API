@@ -1,7 +1,9 @@
 package com.bcode.cade.entities;
 
-import javax.persistence.*;
+import lombok.Data;
 
+import javax.persistence.*;
+@Data
 @Entity
 @Table(name = "CARGA_ACADEMICA_BCODE")
 public class CargaAcademicaBcode {
