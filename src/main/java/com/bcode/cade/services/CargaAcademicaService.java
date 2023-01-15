@@ -28,6 +28,7 @@ public class CargaAcademicaService {
 
     @Autowired
     private OpcionBcodeRepository opcionBcodeRepository;
+
     public Boolean getExist(String numc) {
         return cargaAcademicaBcodeRepository.existsByNumeroControlFk_IdAndNumeroControlFk_StatusAlumno(numc, '0');
     }
@@ -35,14 +36,20 @@ public class CargaAcademicaService {
     public List<CargaAcademicaSemestreBcodeInfo> getCSemestre(String numc, String semestre) {
         return cargaAcademicaBcodeRepository.findByNumeroControlFk_IdAndSemestreLlevadoOrderByIdHorarioFk_ClaveMateriaFk_NombreMateriaAsc(numc, semestre);
     }
+
     public CargaAcademicaBcode saveCarga(CargaAcademicaBcodeDto1 cargaT) {
         if (!cargaAcademicaBcodeRepository.existsByNumeroControlFk_IdAndIdHorarioFk_Id(
                 cargaT.getNumeroControlFkId(),
                 horarioBcodeRepository.findByClaveMateriaFk_Id(cargaT.getIdHorarioFkClaveMateriaFkId()).getId())
-        ){
+        ) {
             return cargaAcademicaBcodeRepository.save(dtoToEntity(cargaT));
-        }else {
-            return null;
+        } else {
+            CargaAcademicaBcode c = cargaAcademicaBcodeRepository.findByNumeroControlFk_IdAndIdHorarioFk_Id(
+                    cargaT.getNumeroControlFkId(), horarioBcodeRepository.findByClaveMateriaFk_Id(cargaT.getIdHorarioFkClaveMateriaFkId()).getId());
+            c.setIdOpcionFk(opcionBcodeRepository.findById(cargaT.getIdOpcionFkId()).get());
+            c.setStatusCargaAcademica(cargaT.getStatusCargaAcademica());
+            c.setSemestreLlevado(cargaT.getSemestreLlevado());
+            return c;
         }
 
     }
@@ -58,20 +65,20 @@ public class CargaAcademicaService {
     }
 
     public List<CargaAcademicaBcode> putStatusSemestre(String numeroC, String semestre, String status) {
-        List<CargaAcademicaBcode> cargaAcademicaBcodes=cargaAcademicaBcodeRepository.findByNumeroControlFk_IdAndSemestreLlevadoOrderByIdHorarioFk_ClaveMateriaFk_NombreMateriaAsc11(numeroC, semestre);
-        List<CargaAcademicaBcode> cargaActualizada =updateStatus(cargaAcademicaBcodes, status);
+        List<CargaAcademicaBcode> cargaAcademicaBcodes = cargaAcademicaBcodeRepository.findByNumeroControlFk_IdAndSemestreLlevadoOrderByIdHorarioFk_ClaveMateriaFk_NombreMateriaAsc11(numeroC, semestre);
+        List<CargaAcademicaBcode> cargaActualizada = updateStatus(cargaAcademicaBcodes, status);
         cargaAcademicaBcodeRepository.saveAll(cargaActualizada);
         return cargaAcademicaBcodeRepository.saveAll(cargaActualizada);
     }
 
     private List<CargaAcademicaBcode> updateStatus(List<CargaAcademicaBcode> cargaAcademicaBcodes, String status) {
         char st = status.charAt(0);
-        cargaAcademicaBcodes.forEach(c-> c.setStatusCargaAcademica(st));
+        cargaAcademicaBcodes.forEach(c -> c.setStatusCargaAcademica(st));
         return cargaAcademicaBcodes;
     }
 
     public List<SemestreInfo> getSemestres(String numeroC) {
-        ArrayList<SemestreInfo> s= new ArrayList<>(cargaAcademicaBcodeRepository.findDistinctByNumeroControlFk_IdOrderBySemestreLlevadoAsc(numeroC).stream()
+        ArrayList<SemestreInfo> s = new ArrayList<>(cargaAcademicaBcodeRepository.findDistinctByNumeroControlFk_IdOrderBySemestreLlevadoAsc(numeroC).stream()
                 .collect(Collectors.toMap(SemestreInfo::getSemestreLlevado, e -> e, (v1, v2) -> v1))
                 .values());
         s.sort(Comparator.comparing(SemestreInfo::getSemestreLlevado));
