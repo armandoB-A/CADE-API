@@ -45,10 +45,13 @@ public class CargaAcademicaService {
             return cargaAcademicaBcodeRepository.save(dtoToEntity(cargaT));
         } else {
             CargaAcademicaBcode c = cargaAcademicaBcodeRepository.findByNumeroControlFk_IdAndIdHorarioFk_Id(
-                    cargaT.getNumeroControlFkId(), horarioBcodeRepository.findByClaveMateriaFk_Id(cargaT.getIdHorarioFkClaveMateriaFkId()).getId());
+                    cargaT.getNumeroControlFkId(),
+                    horarioBcodeRepository.findByClaveMateriaFk_Id(cargaT.getIdHorarioFkClaveMateriaFkId()).getId());
+            System.out.println(c);
             c.setIdOpcionFk(opcionBcodeRepository.findById(cargaT.getIdOpcionFkId()).get());
             c.setStatusCargaAcademica(cargaT.getStatusCargaAcademica());
             c.setSemestreLlevado(cargaT.getSemestreLlevado());
+            System.out.println(c);
             return c;
         }
 
