@@ -106,9 +106,7 @@ public class AdministrativoService {
     public List<CalificacionBcode> calificacion(List<CalificacionAlumnosBcodeDto> calificaciones) {
         List<CalificacionBcode> cs = new ArrayList<>();
         cs = obtenerClaif(calificaciones);
-        cs.forEach(s -> {
-            System.out.println(s.getId() + "#" + s.getCalificacion());
-        });
+
         return calificacionBcodeRepository.saveAll(cs);
     }
 
