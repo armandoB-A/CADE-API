@@ -27,7 +27,7 @@ public class AdministrativosController {
     public ResponseEntity<List<AdministrativoBcode>> getAdminstrativosDef() {
         return new ResponseEntity<>(administrativoService.getAdministrativoss(), HttpStatus.OK);
     }
-    @GetMapping("/adminss")
+    @GetMapping("/docentesI")
     public ResponseEntity<List<AdministrativoBcode>> getDocentesDef() {
         return new ResponseEntity<>(administrativoService.getDocenteSS(), HttpStatus.OK);
     }
