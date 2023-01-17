@@ -259,4 +259,8 @@ public class AdministrativoService {
 
         return horarioBcodeRepository.saveAll(materiasReal);
     }
+
+    public List<AdministrativoBcode> getDocenteSS() {
+        return administrativoBcodeRepository.findByIdRolFk_IdAndCarreraBcodesEmpty((byte) 2);
+    }
 }
