@@ -4,6 +4,7 @@ import com.bcode.cade.dto.CargaAcademicaBcodeDto1;
 import com.bcode.cade.dto.horarioinfo.CargaAcademicaSemestreBcodeInfo;
 import com.bcode.cade.dto.horarioinfo.GruposInfo;
 import com.bcode.cade.dto.horarioinfo.SemestreInfo;
+import com.bcode.cade.dto.horarioinfo.SemestresStatusInfo;
 import com.bcode.cade.entities.CargaAcademicaBcode;
 import com.bcode.cade.repository.AlumnoBcodeRepository;
 import com.bcode.cade.repository.CargaAcademicaBcodeRepository;
@@ -30,7 +31,7 @@ public class CargaAcademicaService {
     private OpcionBcodeRepository opcionBcodeRepository;
 
     public Boolean getExist(String numc) {
-        return cargaAcademicaBcodeRepository.existsByNumeroControlFk_IdAndNumeroControlFk_StatusAlumno(numc, '0');
+        return cargaAcademicaBcodeRepository.existsByNumeroControlFk_Id(numc);
     }
 
     public List<CargaAcademicaSemestreBcodeInfo> getCSemestre(String numc, String semestre) {
@@ -83,6 +84,14 @@ public class CargaAcademicaService {
                 .collect(Collectors.toMap(SemestreInfo::getSemestreLlevado, e -> e, (v1, v2) -> v1))
                 .values());
         s.sort(Comparator.comparing(SemestreInfo::getSemestreLlevado));
+        return s;
+    }
+
+    public List<SemestresStatusInfo> getSemestresID(String numeroC) {
+        ArrayList<SemestresStatusInfo> s = new ArrayList<>(cargaAcademicaBcodeRepository.busquedaSemestres(numeroC).stream()
+                .collect(Collectors.toMap(SemestresStatusInfo::getSemestreLlevado, e -> e, (v1, v2) -> v1))
+                .values());
+        s.sort(Comparator.comparing(SemestresStatusInfo::getSemestreLlevado));
         return s;
     }
 }

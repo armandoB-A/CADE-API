@@ -3,6 +3,7 @@ package com.bcode.cade.controllers;
 import com.bcode.cade.dto.CargaAcademicaBcodeDto1;
 import com.bcode.cade.dto.horarioinfo.CargaAcademicaSemestreBcodeInfo;
 import com.bcode.cade.dto.horarioinfo.SemestreInfo;
+import com.bcode.cade.dto.horarioinfo.SemestresStatusInfo;
 import com.bcode.cade.entities.CargaAcademicaBcode;
 import com.bcode.cade.services.CargaAcademicaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,10 @@ public class CargaAcademicaController {
     @GetMapping("/semestres/id/{id}")
     public ResponseEntity<List<SemestreInfo>> getCSemestre(@PathVariable("id") String numeroC) {
         return new ResponseEntity<>(cargaAcademicaService.getSemestres(numeroC), HttpStatus.OK);
+    }
+    @GetMapping("/semestres-c/id/{id}")
+    public ResponseEntity<List<SemestresStatusInfo>> getSemestreById(@PathVariable("id") String numeroC) {
+        return new ResponseEntity<>(cargaAcademicaService.getSemestresID(numeroC), HttpStatus.OK);
     }
     @GetMapping("/semestre/id/{id}/semestre/{semestre}")
     public ResponseEntity<List<CargaAcademicaSemestreBcodeInfo>> getCargaSemestre(@PathVariable("id") String numeroC,
