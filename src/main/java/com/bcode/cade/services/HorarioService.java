@@ -1,5 +1,6 @@
 package com.bcode.cade.services;
 
+import com.bcode.cade.dto.HorarioBcodeInfo;
 import com.bcode.cade.dto.horarioinfo.GruposInfo;
 import com.bcode.cade.dto.horarioinfo.CargaAcademicaBcodeInfo;
 import com.bcode.cade.repository.CargaAcademicaBcodeRepository;
@@ -21,6 +22,13 @@ public class HorarioService {
 
     public List<GruposInfo> getGrupos(String carrera) {
         ArrayList<GruposInfo> s= new ArrayList<>(horarioBcodeRepository.findDistinctByClaveCarreraFk_IdOrderByIdGrupoFk_NumeroGrupoAsc(carrera).stream()
+                .collect(Collectors.toMap(e -> e.getIdGrupoFk().getNumeroGrupo(), e -> e, (v1, v2) -> v1))
+                .values());
+        s.sort(Comparator.comparing(a -> a.getIdGrupoFk().getNumeroGrupo()));
+        return s;
+    }
+    public List<HorarioBcodeInfo> getGruposCarr(String carrera) {
+        ArrayList<HorarioBcodeInfo> s= new ArrayList<>(horarioBcodeRepository.findDistinctByClaveCarreraFk_IdOrderByIdGrupoFk_NumeroGrupoAsc1(carrera).stream()
                 .collect(Collectors.toMap(e -> e.getIdGrupoFk().getNumeroGrupo(), e -> e, (v1, v2) -> v1))
                 .values());
         s.sort(Comparator.comparing(a -> a.getIdGrupoFk().getNumeroGrupo()));

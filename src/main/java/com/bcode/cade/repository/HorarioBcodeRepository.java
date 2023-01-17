@@ -16,6 +16,9 @@ public interface HorarioBcodeRepository extends JpaRepository<HorarioBcode, Long
     boolean existsByClaveMateriaFk_Id(String id);
     @Query("select distinct h from HorarioBcode h where h.claveCarreraFk.id = ?1 order by h.idGrupoFk.numeroGrupo")
     List<GruposInfo> findDistinctByClaveCarreraFk_IdOrderByIdGrupoFk_NumeroGrupoAsc(String id);
+
+    @Query("select distinct h from HorarioBcode h where h.claveCarreraFk.id = ?1 order by h.idGrupoFk.numeroGrupo")
+    List<com.bcode.cade.dto.HorarioBcodeInfo> findDistinctByClaveCarreraFk_IdOrderByIdGrupoFk_NumeroGrupoAsc1(String id);
     @Query("select h from HorarioBcode h inner join h.idAdministrativoFk.carreraBcodes carreraBcodes " +
             "where carreraBcodes.id = ?1 " +
             "order by h.idGrupoFk.numeroGrupo")
