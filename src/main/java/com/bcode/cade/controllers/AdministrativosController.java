@@ -23,6 +23,10 @@ public class AdministrativosController {
     public ResponseEntity<List<AdministrativoBcode>> getAdminstrativos() {
         return new ResponseEntity<>(administrativoService.getAdministrativos(), HttpStatus.OK);
     }
+    @GetMapping("/adminss")
+    public ResponseEntity<List<AdministrativoBcode>> getAdminstrativosDef() {
+        return new ResponseEntity<>(administrativoService.getAdministrativoss(), HttpStatus.OK);
+    }
 
     @GetMapping("/id/{id_admin}")
     public ResponseEntity<AdministrativoBcode> getAdminstrativo(@PathVariable(value = "id_admin") Integer id) {

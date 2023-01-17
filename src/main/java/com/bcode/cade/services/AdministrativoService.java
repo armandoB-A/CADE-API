@@ -50,6 +50,10 @@ public class AdministrativoService {
         return administrativoBcodeRepository.findAll();
     }
 
+    public List<AdministrativoBcode> getAdministrativoss() {
+        return administrativoBcodeRepository.findByIdRolFk_Id((byte) 3);
+    }
+
     public List<AdministrativoBcode> getDocenteByCarrera(String carrera) {
         return administrativoBcodeRepository.findByCarreraBcodes_DescripcionCarrera(carrera);
     }
