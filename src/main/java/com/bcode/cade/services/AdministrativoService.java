@@ -263,4 +263,7 @@ public class AdministrativoService {
     public List<AdministrativoBcode> getDocenteSS() {
         return administrativoBcodeRepository.findByIdRolFk_IdAndCarreraBcodesEmpty((byte) 2);
     }
+    public List<AdministrativoBcode> getDocenteSSCarreras(String carreras) {
+        return administrativoBcodeRepository.findByIdRolFk_IdAndCarreraBcodes_Id((byte) 2, carreras);
+    }
 }
