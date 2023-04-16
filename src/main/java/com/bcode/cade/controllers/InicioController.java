@@ -14,4 +14,8 @@ public class InicioController {
     public ResponseEntity<Inicio> getInit(){
         return new ResponseEntity<>(new Inicio("Bienvenido"), HttpStatus.OK);
     }
+    @GetMapping("/init")
+    public ResponseEntity<String> getI(){
+        return new ResponseEntity<>("", HttpStatus.OK);
+    }
 }
