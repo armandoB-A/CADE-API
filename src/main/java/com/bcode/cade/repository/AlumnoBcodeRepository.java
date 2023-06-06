@@ -17,6 +17,9 @@ public interface AlumnoBcodeRepository extends JpaRepository<AlumnoBcode, String
 
     AlumnoBcode findByNombreAlumnoAndApe1AlumnoAndApe2AlumnoAndTelefonoAlumnoAndCorreoAlumnoAndDireccionAlumnoAndContraseniaAlumno(String nombreAlumno, String ape1Alumno, String ape2Alumno, String telefonoAlumno, String correoAlumno, String direccionAlumno, String contraseniaAlumno);
 
+    @Query("select a from AlumnoBcode a where a.nombreAlumno = ?1")
+    AlumnoBcode findByNombreAlumno(String nombreAlumno);
+
 
 
 }
